@@ -1,0 +1,104 @@
+#include <unistd.h>
+#include <sys/time.h>
+#include <time.h>
+
+#include <cstdio>
+
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+typedef std::string PDFString;
+
+PDFString getDateTime(void) {
+    struct timeval tv;
+    gettimeofday(&tv,0);
+
+    struct tm ltm;
+    localtime_r(&tv.tv_sec, &ltm);
+
+    char timeret[80];
+    // TODO: YTI universal time support.
+    strftime(timeret, sizeof timeret, "(D:%Y%m%d%H%M%SZ00'00')", &ltm);
+
+   return PDFString(timeret);
+}
+
+#include <stdarg.h>
+
+namespace cv {
+// borrowed from opencv 2.4 code
+PDFString cvformat( const char* fmt, ... )
+{
+    char buf[1 << 16];
+    va_list args;
+    va_start( args, fmt );
+    vsprintf( buf, fmt, args );
+    return PDFString(buf);
+}
+} // namespace cv
+
+namespace pdf { namespace oppo { namespace phone {
+  // borrowed from opencv 2.4 code
+  PDFString pdfformat( const char* fmt, ... )
+  {
+      char buf[1 << 16];
+      va_list args;
+      va_start( args, fmt );
+      vsprintf( buf, fmt, args );
+      return PDFString(buf);
+  }
+}
+}
+}
+
+
+
+int main(int argc, char **argv)
+{
+
+#if 0
+	string fname("/media/sf_Ubuntu1604_Shared_Folder/deflate.data");
+	std::ifstream ifs(fname.c_str(), std::ios::binary);
+	std::vector<char> data((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+//#endif
+
+//#if 0
+//string data("... image_data ...");
+	printf("{ ");
+	for (auto &x : data) {
+		//printf("%X, ", byte);
+		printf("%s%x\n", x<0?"-":"", x<0?-(unsigned)x:x);
+	}
+	printf(" }\n");
+#endif
+
+#if 0
+	char cwd[1024];
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		fprintf(stdout, "Current working dir: %s\n", cwd);
+	else
+		perror("getcwd() error");
+#endif
+
+#if 1
+       //cout << getDateTime() << endl;
+       cout << cv::cvformat("hi, no=%d, ch=%c, str=%s", 1, 'a', "mani") << endl;
+       cout << pdf::oppo::phone::pdfformat("hi, no=%d, ch=%c, str=%s", 1, 'a', "mani") << endl;
+       typedef PDFString (*format_t) (const char * format, ...);
+       format_t cv_format = cv::cvformat;
+       format_t pdf_format = pdf::oppo::phone::pdfformat;
+
+       #define cm_format(fmt, ...) \
+               pdf::oppo::phone::pdfformat(fmt, ##__VA_ARGS__)
+
+       cout << (*cv_format) ("cv, no=%d, ch=%c, str=%s", 1, 'a', "mani") << endl;
+       cout << (*pdf_format) ("pdf, no=%d, ch=%c, str=%s", 2, 'b', "nani") << endl;
+       cout << cm_format("cm, no=%d, ch=%c, str=%s", 3, 'c', "nany") << endl;
+#endif
+
+	return 0;
+}
