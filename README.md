@@ -34,6 +34,7 @@ cmake -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ../ProgramsFo
    and character code conversion using libiconv.
 7. Add a module to Create/Parse **XML** files.
 8. Add a module to Create/Parse **YML** files.
+9. Random image with std and non-std size generation.
 
 License
 --------
