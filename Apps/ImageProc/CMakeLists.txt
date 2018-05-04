@@ -9,6 +9,7 @@ set(SRCS main.cpp ${module_srcs})
 # debug macros
 #add_definitions(-DWITH_DUMMY_PAGE_DATA)
 
-#find_package( OpenCV REQUIRED )
+find_package( OpenCV REQUIRED )
 add_executable(${MODULE_NAME} ${SRCS})
 target_link_libraries(${MODULE_NAME} jpeg)
+target_link_libraries(${MODULE_NAME}  ${OpenCV_LIBS})

@@ -58,6 +58,15 @@ class CJpegDecoder {
   int row_stride;
 };
 
+static int execute(int argc, char **argv) {
+  // pre-proc cmd line args
+
+  do {
+  } while (0);
+
+  return 0;
+}
+
 } /* namespace mani_JPEG */
 
 #endif /* CJPEGDECODER_H_ */

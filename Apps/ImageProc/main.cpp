@@ -7,17 +7,12 @@
 //============================================================================
 
 #include <iostream>
-#include "cjpegdecoder.h"
+//#include "cjpegdecoder.h"
+#include "cimagegenerator.h"
 
 using namespace std;
-using namespace mani_JPEG;
+using namespace PFF;
 
 int main(int argc, char **argv) {
-  cout << "!!! Mani Kumar testing libjpeg code - start !!!" << endl;
-
-  CJpegDecoder decoder("lena.jpg", "lena.raw");
-  decoder.decode();
-
-  cout << "!!! Mani Kumar testing libjpeg code - stop !!!" << endl;
-  return 0;
-}
+  return execute(argc, argv);
+}  // end
