@@ -11,5 +11,5 @@ set(SRCS main.cpp ${module_srcs})
 
 find_package( OpenCV REQUIRED )
 add_executable(${MODULE_NAME} ${SRCS})
-target_link_libraries(${MODULE_NAME} jpeg)
 target_link_libraries(${MODULE_NAME}  ${OpenCV_LIBS})
+target_link_libraries(${MODULE_NAME} jpeg_so_62)
