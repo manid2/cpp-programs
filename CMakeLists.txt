@@ -70,3 +70,10 @@ endif()
 
 # Now simply link your own targets against gtest, gmock,
 # etc. as appropriate
+
+# Use the below cmake command to generate the cmake eclipse project
+# cmake -G"Eclipse CDT4 - Unix Makefiles"\
+#       -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE\
+#       -DCMAKE_BUILD_TYPE=Debug\
+#       -DCMAKE_CXX_FLAGS="-std=c++11"\
+#       -DCMAKE_CXX_COMPILER_ARG1=-std=c++11
