@@ -1,21 +1,20 @@
-// unique_ptr constructor example
-#include <iostream>
-#include <memory>
+/*
+ * main.cpp
+ *
+ *  Created on: 09-May-2018
+ *      Author: Mani Kumar
+ */
 
-#include "pdf_object.h"
-#include "debug_macros.h"
+#include <lpdfcommon.h>
 
-using namespace std;
+#include <cstdio>
+
+#ifdef LPDF_BUILD_AS_EXE
+
+using namespace LilPDF;
 
 int main(int argc, char **argv) {
-  PDFObject p(2.1);
-  cout << "val of p = " << p.toString() << endl;
+  return execute(argc, argv);
+}  // end
 
-  p = false;
-  cout << "val of p = " << p.toString() << endl;
-
-  p = true;
-  cout << "val of p = " << p.toString() << endl;
-
-  return 0;
-}
+#endif // LPDF_BUILD_AS_EXE
