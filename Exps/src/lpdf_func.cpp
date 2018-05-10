@@ -195,6 +195,7 @@ int iends_with(const char* str, const char* sub_str) {
 /********************************* For Testing - begin **********************************/
 #ifdef LPDF_BUILD_AS_EXE
 #include <pdf_object.h>
+#include <pdf_dictionary.h>
 
 bool LilPDF::LPDF_DEBUG = false;
 LilPDF::ePDF_file_type LilPDF::PDF_TYPE = LilPDF::eUknown;
@@ -222,11 +223,16 @@ int LilPDF::execute(int argc, char **argv) {
   int ret = 0;
 
   do {
-    LilPDF::PDFObject p1;
-    std::cout << "val of p = " << p1.toString() << std::endl;
+    LilPDF::PDFDictionary_t dict;
+    LilPDF::PDFObject p;
+    p = 2;
+    dict["hi"] = &p;
+    p = 4.7;
+    dict["mi"] = &p;
 
-    p1 = "(mani)";
-    std::cout << "val of p = " << p1.toString() << std::endl;
+    LilPDF::PDFDictionary d;
+    d = dict;
+    std::cout << d;
   } while (0);
 
   return ret;

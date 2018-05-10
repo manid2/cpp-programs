@@ -6,34 +6,40 @@ namespace LilPDF {
 PDFObject::PDFObject()
     : _type(Unknown),
       _uval() {
+  init();
   DEBUG_INF(" _type = %d\n", _type);
 }
 
-PDFObject::PDFObject(ePDF_object_type type) {
+PDFObject::PDFObject(ePDF_object_type type)
+    : _type(type) {
   init();
   DEBUG_INF(" _type = %d\n", _type);
 }
 
 PDFObject::PDFObject(bool b)
     : _type(boolean_type) {
+  init();
   _uval.boolean = b;
   DEBUG_INF(" _type = %d\n", _type);
 }
 
 PDFObject::PDFObject(int i)
     : _type(integer_type) {
+  init();
   _uval.integer = i;
   DEBUG_INF(" _type = %d\n", _type);
 }
 
 PDFObject::PDFObject(double r)
     : _type(real_type) {
+  init();
   _uval.real = r;
   DEBUG_INF(" _type = %d\n", _type);
 }
 
 PDFObject::PDFObject(const PDFString &s)
     : _type(Unknown) {
+  init();
   PDFObject* p = fromString(s);
   copy(*p);
   delete p;
@@ -42,6 +48,7 @@ PDFObject::PDFObject(const PDFString &s)
 
 PDFObject::PDFObject(const char *c)
     : _type(Unknown) {
+  init();
   PDFString s(c);
   PDFObject* p = fromString(s);
   copy(*p);
@@ -49,19 +56,14 @@ PDFObject::PDFObject(const char *c)
   DEBUG_INF(" _type = %d\n", _type);
 }
 
-PDFObject::PDFObject(const PDFArray_t &a)
+/*PDFObject::PDFObject(const PDFArray_t &a)
     : _type(array_type) {
+  init();
   _uval.array = new PDFArray_t(a);
   DEBUG_INF(" _type = %d\n", _type);
 }
 
-PDFObject::PDFObject(const PDFDictionary_t &d)
-    : _type(dictionary_type) {
-  _uval.dictionary = new PDFDictionary_t(d);
-  DEBUG_INF(" _type = %d\n", _type);
-}
-
-/*PDFObject::PDFObject(const PDFObject *strm)
+ PDFObject::PDFObject(const PDFObject *strm)
     : _type(stream_type) {
   //u_.stream_ = strm; // TODO: YTI
   DEBUG_INF(" _type = %d\n", _type);
@@ -84,6 +86,7 @@ PDFObject &PDFObject::operator=(const PDFObject &x) {
 }
 
 PDFObject &PDFObject::operator=(const bool b) {
+  init();
   _type = boolean_type;
   _uval.boolean = b;
   DEBUG_INF(" _type = %d\n", _type);
@@ -91,6 +94,7 @@ PDFObject &PDFObject::operator=(const bool b) {
 }
 
 PDFObject &PDFObject::operator=(const int i) {
+  init();
   _type = integer_type;
   _uval.integer = i;
   DEBUG_INF(" _type = %d\n", _type);
@@ -98,6 +102,7 @@ PDFObject &PDFObject::operator=(const int i) {
 }
 
 PDFObject &PDFObject::operator=(const double r) {
+  init();
   _type = real_type;
   _uval.real = r;
   DEBUG_INF(" _type = %d\n", _type);
@@ -105,6 +110,7 @@ PDFObject &PDFObject::operator=(const double r) {
 }
 
 PDFObject &PDFObject::operator=(const PDFString &s) {
+  init();
   PDFObject* p = fromString(s);
   copy(*p);
   delete p;
@@ -113,6 +119,7 @@ PDFObject &PDFObject::operator=(const PDFString &s) {
 }
 
 PDFObject &PDFObject::operator=(const char *c) {
+  init();
   PDFString s(c);
   PDFObject* p = fromString(s);
   copy(*p);
@@ -121,23 +128,17 @@ PDFObject &PDFObject::operator=(const char *c) {
   return *this;
 }
 
-PDFObject &PDFObject::operator=(const PDFArray_t &a) {
+/*PDFObject &PDFObject::operator=(const PDFArray_t &a) {
+  init();
   _type = array_type;
   _uval.array = new PDFArray_t(a);
   DEBUG_INF(" _type = %d\n", _type);
   return *this;
 }
+ */
 
-PDFObject &PDFObject::operator=(const PDFDictionary_t &d) {
-  _type = real_type;
-  _uval.dictionary = new PDFDictionary_t(d);
-  DEBUG_INF(" _type = %d\n", _type);
-  return *this;
-}
-
-PDFOStream &/*PDFObject::*/operator<<(PDFOStream &ps, const PDFObject &obj) {
-  ps << obj.toString();
-  DEBUG_INF(" _type = %d\n", obj._type);
+PDFOStream &/*PDFObject::*/operator<<(PDFOStream &ps, /*const*/PDFObject &obj) {
+  obj.serialize(ps);
   return ps;
 }
 
@@ -162,16 +163,24 @@ void PDFObject::init() {
     INIT(boolean, false)
     INIT(integer, 0)
     INIT(real, 0.0)
-    INIT(string, new PDFString())
-    INIT(name, new PDFString())
-    INIT(array, new PDFArray_t())
-    INIT(dictionary, new PDFDictionary_t())
+    INIT(string, NULL)
+    INIT(name, NULL)
+    INIT(array, NULL)
+    INIT(dictionary, NULL)
     INIT(stream, NULL)
     default:
       break;
   }
 
 #undef INIT
+
+  setObjNum(0);
+  setGenNum(0);
+  setStartOffset(0);
+  setEndOffset(0);
+  setObjCount(0);
+  setIndirectFlag(false);
+  setReferencedFlag(false);
 }
 
 /****************** clear() definition ******************/
@@ -197,11 +206,6 @@ void PDFObject::clear() {
 }
 
 /****************** helper methods definitions ******************/
-void PDFObject::swap(PDFObject &x) {
-  std::swap(_type, x._type);
-  std::swap(_uval, x._uval);
-}
-
 void PDFObject::copy(const PDFObject &p) {
   _type = p._type;
   _uval = p._uval;
@@ -219,6 +223,14 @@ void PDFObject::copy(const PDFObject &p) {
   }
 
 #undef COPY
+
+  setObjNum(p.getObjNum());
+  setGenNum(p.getGenNum());
+  setStartOffset(p.getStartOffset());
+  setEndOffset(p.getEndOffset());
+  setObjCount(p.getObjCount());
+  setIndirectFlag(p.getIndirectFlag());
+  setReferencedFlag(p.getReferencedFlag());
 }
 
 PDFString PDFObject::toString() const {
@@ -247,8 +259,8 @@ PDFString PDFObject::toString() const {
     STR_STR(string)
     STR_STR(name)
       /*AS_STR(array, true)
-       AS_STR(dictionary, true)*/
-      // AS_STR(stream) // TODO, YTI
+       AS_STR(dictionary, true)
+       AS_STR(stream) // TODO, YTI*/
     default:
       ss << ("NONE");
       break;
@@ -264,27 +276,39 @@ PDFString PDFObject::toString() const {
 PDFObject* PDFObject::fromString(const PDFString& str) const {
   PDFObject* p = new PDFObject();
 
-  do {
-    if (starts_with(str.c_str(), "/")) {
-      p->_type = name_type;
-      p->_uval.name = new PDFString(str);
-    } else if ((starts_with(str.c_str(), "(") && ends_with(str.c_str(), ")"))
-        || (starts_with(str.c_str(), "<") && ends_with(str.c_str(), ">"))) {
-      p->_type = string_type;
-      p->_uval.string = new PDFString(str);
-    }
-    else if (!str.compare("null")) {
-      p->_type = null_type;
-    }
-  } while (0);
+  // NOTE: Only partially implemented!
+  if (starts_with(str.c_str(), "/")) {
+    p->_type = name_type;
+    p->_uval.name = new PDFString(str);
+    DEBUG_INF(", p->_type=[%d], p->_uval.name=[%s]\n", p->_type,
+              p->_uval.name->c_str());
+  } else if ((starts_with(str.c_str(), "(") && ends_with(str.c_str(), ")"))
+      || (starts_with(str.c_str(), "<") && ends_with(str.c_str(), ">"))) {
+    p->_type = string_type;
+    p->_uval.string = new PDFString(str);
+    DEBUG_INF(", p->_type=[%d], p->_uval.string=[%s]\n", p->_type,
+              p->_uval.string->c_str());
+  } else if (!str.compare("null")) {
+    p->_type = null_type;
+    DEBUG_INF(", p->_type=[%d], [null]\n", p->_type);
+  }
 
   return p;
 }
 
 size_t PDFObject::serialize(PDFOStream &ps) {
-  //ps.seekp(getStartOffset());
-  ps << this->toString();
-  return ps.tellp();
+  ps.seekp(getStartOffset());
+
+  if (isIndirect && isReferenced) {
+    ps << objNum << " " << genNum << " " << " R";
+  } else if (isIndirect && !isReferenced) {
+    ps << objNum << " " << genNum << " obj" << PDF_NEW_LINE;
+    ps << this->toString();
+    ps << "endobj" << PDF_NEW_LINE;
+  }
+
+  setEndOffset(ps.tellp());
+  return getSize();
 }
 
 }  // namespace LilPDF
