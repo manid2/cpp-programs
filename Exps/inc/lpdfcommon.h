@@ -107,6 +107,7 @@ typedef struct tagPDF_ImgAttrs {
 } stPDF_ImgAttrs;
 
 PDFString getStringFromEnum(ePDF_file_type);
+PDFString getStringFromEnum(ePDF_object_type);
 ePDF_file_type getEnumFromString(PDFString);
 
 /* Returns the date time string. */

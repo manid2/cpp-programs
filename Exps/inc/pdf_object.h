@@ -23,8 +23,8 @@ namespace LilPDF {
 
 class PDFObject;
 
-typedef std::vector<PDFObject*> PDFArray_t;
-typedef std::map<PDFString, PDFObject*> PDFDictionary_t;
+typedef std::vector<PDFObject> PDFArray_t;
+typedef std::map<PDFString, PDFObject> PDFDictionary_t;
 
 class PDFObject {
  public:
@@ -36,8 +36,8 @@ class PDFObject {
   explicit PDFObject(double r);
   explicit PDFObject(const PDFString &s);
   explicit PDFObject(const char *c);
-  // NOTE: need to implement these separately
   //explicit PDFObject(const PDFArray_t &a);
+  explicit PDFObject(const PDFDictionary_t &d);
   //explicit PDFObject(const PDFObject *strm); // not copy constructor
   PDFObject(const PDFObject &x);  // copy constructor
   virtual ~PDFObject();
@@ -50,6 +50,7 @@ class PDFObject {
   PDFObject &operator=(const PDFString &s);
   PDFObject &operator=(const char *c);
   //PDFObject &operator=(const PDFArray_t &a);
+  PDFObject &operator=(const PDFDictionary_t &d);
   //PDFObject &operator=(const PDFObject *strm);
 
   friend PDFOStream &operator<<(PDFOStream &ps, /*const*/PDFObject &obj);

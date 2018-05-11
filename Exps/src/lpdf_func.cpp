@@ -87,19 +87,47 @@ std::vector<std::string> getFileNamesFromFolder(const char *folderPath) {
   return vFileNames;
 }
 
-PDFString getStringFromEnum(ePDF_file_type etype) {
+PDFString getStringFromEnum(ePDF_file_type ftype) {
   PDFString stype("eUknown");
-  switch (etype) {
-    case eLinearized_PDF:
-      stype = "LPDF";
-      break;
-    case eNonSearchable_PDF:
-      stype = "NSPDF";
-      break;
-    case eSearchable_PDF:
-      stype = "SPDF";
-      break;
+
+#define CASE(x)\
+  case x:\
+  stype = #x;\
+  break;
+
+  switch (ftype) {
+    CASE(eUknown)
+    CASE(eLinearized_PDF)
+    CASE(eNonSearchable_PDF)
+    CASE(eSearchable_PDF)
   }
+
+  return stype;
+}
+
+PDFString getStringFromEnum(ePDF_object_type otype) {
+  PDFString stype("eUknown");
+
+#define CASE(x)\
+  case x:\
+  stype = #x;\
+  break;
+
+  switch (otype) {
+    CASE(Unknown)
+    CASE(null_type)
+    CASE(boolean_type)
+    CASE(integer_type)
+    CASE(real_type)
+    CASE(string_type)
+    CASE(name_type)
+    CASE(array_type)
+    CASE(dictionary_type)
+    CASE(stream_type)
+    CASE(operator_type)
+    CASE(inlineimage_type)
+  }
+
   return stype;
 }
 
@@ -140,7 +168,7 @@ int to_upper(const char* i_str, char* o_str) {
 }
 
 int starts_with(const char* str, const char* sub_str) {
-  size_t strl = strlen(str);
+  //size_t strl = strlen(str);
   size_t subl = strlen(sub_str);
   if (!str || !sub_str)  // to prevent seg fault
     return 0;
@@ -223,16 +251,14 @@ int LilPDF::execute(int argc, char **argv) {
   int ret = 0;
 
   do {
-    LilPDF::PDFDictionary_t dict;
-    LilPDF::PDFObject p;
-    p = 2;
-    dict["hi"] = &p;
-    p = 4.7;
-    dict["mi"] = &p;
-
     LilPDF::PDFDictionary d;
-    d = dict;
-    std::cout << d;
+    d.setReferencedFlag(false);
+
+    PDFString key("/Mani");
+    d.insertKey(key, LilPDF::PDFObject(2.7));
+    key = "/Student";
+    d.insertKey(key, LilPDF::PDFObject(false));
+    std::cout << "d = \n[\n" << d << "\n]" << std::endl;
   } while (0);
 
   return ret;

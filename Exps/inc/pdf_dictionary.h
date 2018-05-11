@@ -37,26 +37,14 @@ class PDFDictionary : public PDFObject {
   // overloaded operator
   PDFDictionary &operator=(const PDFDictionary_t &d);
 
+  //! Converts the PDF object to its string representation.
+  virtual PDFString toString(void) const override;
+  //! Constructs a PDF object from string. NOTE: [Partially implemented]
+  virtual PDFObject* fromString(const PDFString& str) const override;
   //! writes the object to ostream
-  virtual size_t serialize(PDFOStream &ps) override {
-    ps.seekp(getStartOffset());
+  virtual size_t serialize(PDFOStream &ps) override;
 
-    if (getIndirectFlag() && getReferencedFlag()) {
-      ps << getObjNum() << " " << getGenNum() << " " << " R";
-    } else if (getIndirectFlag() && !getReferencedFlag()) {
-      ps << getObjNum() << " " << getGenNum() << " obj" << PDF_NEW_LINE;
-      ps << PDF_DICT_BGN;
-
-      ps << this->toString();
-
-      ps << PDF_DICT_END << PDF_NEW_LINE;
-      ps << "endobj" << PDF_NEW_LINE;
-    }
-
-    setEndOffset(ps.tellp());
-    return getSize();
-  }
-
+#if 0 // these are for parsing
   bool hasKey(const PDFString& key) const {
     return _uval.dictionary->find(key) != _uval.dictionary->end();
   }
@@ -72,20 +60,30 @@ class PDFDictionary : public PDFObject {
   const PDFDictionary_t& getItems() const {
     return *(_uval.dictionary);
   }
+#endif
 
+#if 1
   // Insert a key-obj pair to dictionary.
-  void insertKey(const PDFString& key, PDFObject *obj) {
+  void insertKey(const PDFString& key, PDFObject obj) {
+    _uval.dictionary = new PDFDictionary_t();
     PDFDictionary_t &dict = *(_uval.dictionary);
     dict[key] = obj;
   }
+  void insertKey(const char* key, PDFObject obj) {
+    _uval.dictionary = new PDFDictionary_t();
+    PDFDictionary_t &dict = *(_uval.dictionary);
+    dict[PDFString(key)] = obj;
+  }
   // Replace value of key, adding it if it does not exist
-  void replaceKey(const PDFString& key, PDFObject *obj) {
+  void replaceKey(const PDFString& key, PDFObject obj) {
     _uval.dictionary->at(key) = obj;
   }
   // Remove key, do nothing if key does not exist
   void removeKey(const PDFString& key) {
     _uval.dictionary->erase(key);
   }
+#endif
+
 };
 
 } /* namespace LilPDF */

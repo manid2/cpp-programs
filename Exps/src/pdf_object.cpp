@@ -3,75 +3,82 @@
 namespace LilPDF {
 
 /****************** ctor's and dtor definitions ******************/
-PDFObject::PDFObject()
-    : _type(Unknown),
-      _uval() {
+PDFObject::PDFObject() {
   init();
-  DEBUG_INF(" _type = %d\n", _type);
+  _type = Unknown;
+  _uval = UValue();
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
-PDFObject::PDFObject(ePDF_object_type type)
-    : _type(type) {
+PDFObject::PDFObject(ePDF_object_type type) {
   init();
-  DEBUG_INF(" _type = %d\n", _type);
+  _type = type;
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
-PDFObject::PDFObject(bool b)
-    : _type(boolean_type) {
+PDFObject::PDFObject(bool b) {
   init();
+  _type = boolean_type;
   _uval.boolean = b;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
-PDFObject::PDFObject(int i)
-    : _type(integer_type) {
+PDFObject::PDFObject(int i) {
   init();
+  _type = integer_type;
   _uval.integer = i;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
-PDFObject::PDFObject(double r)
-    : _type(real_type) {
+PDFObject::PDFObject(double r) {
   init();
+  _type = real_type;
   _uval.real = r;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
-PDFObject::PDFObject(const PDFString &s)
-    : _type(Unknown) {
+PDFObject::PDFObject(const PDFString &s) {
   init();
+  _type = Unknown;
   PDFObject* p = fromString(s);
   copy(*p);
   delete p;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
-PDFObject::PDFObject(const char *c)
-    : _type(Unknown) {
+PDFObject::PDFObject(const char *c) {
   init();
+  _type = Unknown;
   PDFString s(c);
   PDFObject* p = fromString(s);
   copy(*p);
   delete p;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
+}
+
+PDFObject::PDFObject(const PDFDictionary_t &d) {
+  init();
+  _type = dictionary_type;
+  _uval.dictionary = new PDFDictionary_t(d);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
 /*PDFObject::PDFObject(const PDFArray_t &a)
-    : _type(array_type) {
-  init();
-  _uval.array = new PDFArray_t(a);
-  DEBUG_INF(" _type = %d\n", _type);
-}
+ : _type(array_type) {
+ init();
+ _uval.array = new PDFArray_t(a);
+ DEBUG_INF(" _type = %d\n", _type);
+ }
 
  PDFObject::PDFObject(const PDFObject *strm)
-    : _type(stream_type) {
-  //u_.stream_ = strm; // TODO: YTI
-  DEBUG_INF(" _type = %d\n", _type);
+ : _type(stream_type) {
+ //u_.stream_ = strm; // TODO: YTI
+ DEBUG_INF(" _type = %d\n", _type);
  }*/
 
 PDFObject::PDFObject(const PDFObject &x) {
   copy(x);
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
 }
 
 PDFObject::~PDFObject() {
@@ -81,7 +88,7 @@ PDFObject::~PDFObject() {
 /****************** overloaded operators definitions ******************/
 PDFObject &PDFObject::operator=(const PDFObject &x) {
   copy(x);
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
   return *this;
 }
 
@@ -89,7 +96,7 @@ PDFObject &PDFObject::operator=(const bool b) {
   init();
   _type = boolean_type;
   _uval.boolean = b;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
   return *this;
 }
 
@@ -97,7 +104,7 @@ PDFObject &PDFObject::operator=(const int i) {
   init();
   _type = integer_type;
   _uval.integer = i;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
   return *this;
 }
 
@@ -105,7 +112,7 @@ PDFObject &PDFObject::operator=(const double r) {
   init();
   _type = real_type;
   _uval.real = r;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
   return *this;
 }
 
@@ -114,7 +121,7 @@ PDFObject &PDFObject::operator=(const PDFString &s) {
   PDFObject* p = fromString(s);
   copy(*p);
   delete p;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
   return *this;
 }
 
@@ -124,17 +131,25 @@ PDFObject &PDFObject::operator=(const char *c) {
   PDFObject* p = fromString(s);
   copy(*p);
   delete p;
-  DEBUG_INF(" _type = %d\n", _type);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
+  return *this;
+}
+
+PDFObject &PDFObject::operator=(const PDFDictionary_t &d) {
+  init();
+  _type = array_type;
+  _uval.dictionary = new PDFDictionary_t(d);
+  DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
   return *this;
 }
 
 /*PDFObject &PDFObject::operator=(const PDFArray_t &a) {
-  init();
-  _type = array_type;
-  _uval.array = new PDFArray_t(a);
-  DEBUG_INF(" _type = %d\n", _type);
-  return *this;
-}
+ init();
+ _type = array_type;
+ _uval.array = new PDFArray_t(a);
+ DEBUG_INF(" _type = %d\n", _type);
+ return *this;
+ }
  */
 
 PDFOStream &/*PDFObject::*/operator<<(PDFOStream &ps, /*const*/PDFObject &obj) {
@@ -148,7 +163,8 @@ PDFObject &/*PDFObject::*/operator>>(PDFIStream &ps, PDFObject &obj) {
   PDFObject *p = obj.fromString(str);
   obj = PDFObject(*p);
   delete p;
-  DEBUG_INF(" _type = %d\n", obj._type);
+  DEBUG_INF(" _type = %d (%s), \n", obj._type,
+            getStringFromEnum(obj._type).c_str());
   return obj;
 }
 
@@ -179,7 +195,7 @@ void PDFObject::init() {
   setStartOffset(0);
   setEndOffset(0);
   setObjCount(0);
-  setIndirectFlag(false);
+  setIndirectFlag(true);
   setReferencedFlag(false);
 }
 
@@ -299,10 +315,10 @@ PDFObject* PDFObject::fromString(const PDFString& str) const {
 size_t PDFObject::serialize(PDFOStream &ps) {
   ps.seekp(getStartOffset());
 
-  if (isIndirect && isReferenced) {
-    ps << objNum << " " << genNum << " " << " R";
-  } else if (isIndirect && !isReferenced) {
-    ps << objNum << " " << genNum << " obj" << PDF_NEW_LINE;
+  if (getIndirectFlag() && getReferencedFlag()) {
+    ps << getObjNum() << " " << getGenNum() << " " << " R";
+  } else if (getIndirectFlag() && !getReferencedFlag()) {
+    ps << getObjNum() << " " << getGenNum() << " obj" << PDF_NEW_LINE;
     ps << this->toString();
     ps << "endobj" << PDF_NEW_LINE;
   }

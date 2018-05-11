@@ -15,11 +15,10 @@
 #include <sys/time.h>
 #include <string>
 
-//namespace LilPDF {
+namespace LilPDF {
 
 #define WITH_FILE_NAME
 #define WITH_FUNC_NAME
-
 
 #ifdef WITH_TIME_STAMP
 typedef std::string PDFString;
@@ -68,6 +67,6 @@ PDFString getLogDateTime(void);
                 "%s, %s:%5d: %s::%s() INF: " FORMAT ,\
                 TIME_STAMP, __FILENAME__, __LINE__, CLASS_NAME, FUNC_NAME, ##__VA_ARGS__);
 
-//}  // namespace LPDF
+}
 
 #endif /* DEBUG_MACROS_H_ */
