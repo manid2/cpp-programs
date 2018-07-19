@@ -65,14 +65,20 @@ class PDFDictionary : public PDFObject {
 #if 1
   // Insert a key-obj pair to dictionary.
   void insertKey(const PDFString& key, PDFObject obj) {
-    _uval.dictionary = new PDFDictionary_t();
-    PDFDictionary_t &dict = *(_uval.dictionary);
-    dict[key] = obj;
+    if (_uval.dictionary) {
+      PDFDictionary_t &dict = *(_uval.dictionary);
+      dict[key] = obj;
+    } else {
+      DEBUG_ERR(", dict is null!\n");
+    }
   }
   void insertKey(const char* key, PDFObject obj) {
-    _uval.dictionary = new PDFDictionary_t();
-    PDFDictionary_t &dict = *(_uval.dictionary);
-    dict[PDFString(key)] = obj;
+    if (_uval.dictionary) {
+      PDFDictionary_t &dict = *(_uval.dictionary);
+      dict[key] = obj;
+    } else {
+      DEBUG_ERR(", dict is null!\n");
+    }
   }
   // Replace value of key, adding it if it does not exist
   void replaceKey(const PDFString& key, PDFObject obj) {

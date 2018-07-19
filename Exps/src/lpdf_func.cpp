@@ -254,11 +254,17 @@ int LilPDF::execute(int argc, char **argv) {
     LilPDF::PDFDictionary d;
     d.setReferencedFlag(false);
 
-    PDFString key("/Mani");
-    d.insertKey(key, LilPDF::PDFObject(2.7));
-    key = "/Student";
-    d.insertKey(key, LilPDF::PDFObject(false));
-    std::cout << "d = \n[\n" << d << "\n]" << std::endl;
+    d.insertKey("/Student", false);
+    d.insertKey("/Mani", 2.1);
+
+    PDFDictionary_t di;
+    di["/Version"] = 1.1;
+    di["/Usable"] = true;
+    LilPDF::PDFDictionary d2(di);
+
+    d.insertKey("/NewDict", d2);
+
+    std::cout << "d = \n[\n" << d << "]" << std::endl;
   } while (0);
 
   return ret;

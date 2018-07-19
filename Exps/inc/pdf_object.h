@@ -31,13 +31,19 @@ class PDFObject {
   // ctor's and dtor
   PDFObject();
   PDFObject(ePDF_object_type type);
-  explicit PDFObject(bool b);
-  explicit PDFObject(int i);
-  explicit PDFObject(double r);
-  explicit PDFObject(const PDFString &s);
-  explicit PDFObject(const char *c);
+  /*explicit*/
+  PDFObject(bool b);
+  /*explicit*/
+  PDFObject(int i);
+  /*explicit*/
+  PDFObject(double r);
+  /*explicit*/
+  PDFObject(const PDFString &s);
+  /*explicit*/
+  PDFObject(const char *c);
   //explicit PDFObject(const PDFArray_t &a);
-  explicit PDFObject(const PDFDictionary_t &d);
+  /*explicit*/
+  PDFObject(const PDFDictionary_t &d);
   //explicit PDFObject(const PDFObject *strm); // not copy constructor
   PDFObject(const PDFObject &x);  // copy constructor
   virtual ~PDFObject();

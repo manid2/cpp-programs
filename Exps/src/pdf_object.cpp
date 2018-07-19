@@ -274,6 +274,18 @@ PDFString PDFObject::toString() const {
     PRI_STR(real)
     STR_STR(string)
     STR_STR(name)
+    case dictionary_type: {
+      ss << PDF_DICT_BGN;
+      PDFDictionary_t &dict = *_uval.dictionary;
+      //DEBUG_ERR(", dict size = [%ld]\n", dict.size());
+      PDFDictionary_t::iterator item = dict.begin();
+      /*for (auto&& item : dict) {
+       ss << cv_format("%s %s", item.first.c_str(),
+       item.second.toString().c_str());
+       }*/
+      ss << PDF_DICT_END;
+    }
+      break;
       /*AS_STR(array, true)
        AS_STR(dictionary, true)
        AS_STR(stream) // TODO, YTI*/

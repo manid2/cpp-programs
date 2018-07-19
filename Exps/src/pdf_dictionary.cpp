@@ -10,12 +10,13 @@
 namespace LilPDF {
 
 PDFDictionary::PDFDictionary() {
-  init();
+  //init(); called by base obj already
   _type = dictionary_type;
+  _uval.dictionary = new PDFDictionary_t();
 }
 
 PDFDictionary::PDFDictionary(const PDFDictionary_t &d) {
-  init();
+  //init(); called by base obj already
   _type = dictionary_type;
   _uval.dictionary = new PDFDictionary_t(d);
   DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
@@ -26,7 +27,7 @@ PDFDictionary::~PDFDictionary() {
 }
 
 PDFDictionary &PDFDictionary::operator=(const PDFDictionary_t &d) {
-  init();
+  //init(); called by base obj already
   _type = real_type;
   _uval.dictionary = new PDFDictionary_t(d);
   DEBUG_INF(" _type = %d (%s), \n", _type, getStringFromEnum(_type).c_str());
@@ -35,13 +36,23 @@ PDFDictionary &PDFDictionary::operator=(const PDFDictionary_t &d) {
 
 PDFString PDFDictionary::toString() const {
   PDFSStream ss;
-  PDFDictionary_t &dict = *_uval.dictionary;
 
-  for (auto&& item : dict) {
-    ss << item.first << " " << item.second;
+#if 0
+  ss << "\ndict\n";
+#else
+  if (_uval.dictionary) {
+    PDFDictionary_t &dict = *_uval.dictionary;
+
+    for (auto&& item : dict) {
+      //ss << "key=[" << item.first << "] " << ", val=[" << item.second << "]\n";
+      ss << cv_format("%s %s", item.first.c_str(),
+                      item.second.toString().c_str());
+    }
+  } else {
+    DEBUG_ERR(", dict is null!\n");
   }
+#endif
 
-  ss << cv_format("dict\n");
   return ss.str();
 }
 
