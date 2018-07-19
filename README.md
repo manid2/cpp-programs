@@ -28,13 +28,12 @@ cmake -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ../ProgramsFo
 1. Implement **LearnGTestAndGMock**.
 2. Add a module to **automatically insert data into an empty space in an image**.
 3. Add a module to **Generate/Scan Barcode images**.
-4. Add a module to convert **pdf2jpeg** file [If possible].
-5. Add a module to **Decode/Encode jpeg2raw** file using libjpeg. 
-6. Add a module to show how to use Unicode characters(esp CJK) in C++  
+4. Add a module to **Decode/Encode jpeg2raw** file using libjpeg. 
+5. Add a module to show how to use Unicode characters(esp CJK) in C++  
    and character code conversion using libiconv.
-7. Add a module to Create/Parse **XML** files.
-8. Add a module to Create/Parse **YML** files.
-9. Random image with std and non-std size generation.
+6. Add a module to Create/Parse **XML** files.
+7. Add a module to Create/Parse **YML** files.
+8. Create a chat application in C++ with encryption.
 
 License
 --------
