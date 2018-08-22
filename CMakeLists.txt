@@ -44,11 +44,11 @@ message( STATUS "========== All modules are added ==========" )
 #
 #####################################################################
 # Download and unpack googletest at configure time
-configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
-execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
-execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+#configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+#execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+#    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+#execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+#    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
 
 # Prevent GoogleTest from overriding our compiler/linker options
 # when building with Visual Studio
