@@ -8,3 +8,5 @@ set(SRCS main.cpp ${module_srcs})
 
 string(TOLOWER ${MODULE_NAME} MODULE_NAME)
 add_executable(${MODULE_NAME} ${SRCS})
+find_package (Threads)
+target_link_libraries(${MODULE_NAME} ${CMAKE_THREAD_LIBS_INIT})

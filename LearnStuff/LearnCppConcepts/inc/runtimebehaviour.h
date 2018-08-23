@@ -51,8 +51,10 @@ class RuntimeBehaviour {
   virtual ~RuntimeBehaviour();
 
  public:
-  // functions to call for each concept in cpp related to virtual table
+  // function to call for each concept in cpp related to virtual table
   void runtimePolymorphismDemo(void);
+  // TODO:
+  void virtualDestructorDemo(void);
 };
 
 static int execute(int argc, char **argv) {
