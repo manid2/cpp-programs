@@ -6,7 +6,8 @@
  */
 
 //#include "runtimebehaviour.h"
-#include <threads_cpp11.h>
+//#include <threads_cpp11.h>
+#include <stringproblems.h>
 
 using namespace std;
 using namespace PFF;
