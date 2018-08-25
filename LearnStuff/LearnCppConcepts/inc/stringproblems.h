@@ -34,13 +34,13 @@ void str_append(const char* src, const char** dst, size_t len, size_t init_len);
 long str_find(const char* str_i, const char* str_f, size_t init_len);
 
 static int execute(int a, char** v) {
-  string str_i("I am happy, am, am, am.");
+  string str_i("I am happy, am...");
   string str_f("am");
-  string str_r("dasba");
+  string str_r("abbas");
 
-  std::cout << "in : [" << str_i << "]" << std::endl;
+  std::cout << "in : [" << str_i << "], size=" << str_i.size() << std::endl;
   string str_o(find_n_replace(str_i, str_f, str_r));
-  std::cout << "out: [" << str_o << "]" << std::endl;
+  std::cout << "out: [" << str_o << "], size=" << str_o.size() << std::endl;
 }
 
 } /* namespace PFF */

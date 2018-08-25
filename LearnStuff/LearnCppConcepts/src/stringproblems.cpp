@@ -21,7 +21,6 @@ namespace PFF {
  // TODO Auto-generated destructor stub
  }
  */
-
 #define USE_C_CODE 1
 
 string find_n_replace(string str_i, string str_f, string str_r) {
@@ -34,7 +33,7 @@ string find_n_replace(string str_i, string str_f, string str_r) {
     size_t str_i_cur_pos = 0;
     size_t str_o_cur_pos = 0;
     do {
-      //cout << endl << "sub_pos: " << sub_pos << endl << endl;
+      cout << "-> sub_pos: " << sub_pos << endl;
 
       // append the string before str_f from str_i
       str_o.append(str_i, str_i_cur_pos, (sub_pos - str_i_cur_pos));
@@ -46,10 +45,14 @@ string find_n_replace(string str_i, string str_f, string str_r) {
 
       // update string pos's
       str_i_cur_pos = sub_pos + str_f.size();
-      //cout << "str_i_cur_pos: " << str_i_cur_pos << endl;
+      cout << "str_i_cur_pos: " << str_i_cur_pos << endl;
 
       sub_pos = str_i.find(str_f, str_i_cur_pos);
-    }while (string::npos != sub_pos);
+    } while (string::npos != sub_pos);
+    // copy the remaining str_i to str_o
+    if (str_i_cur_pos != str_i.size() - 1) {
+      str_o.append(str_i.begin() + str_i_cur_pos, str_i.end());
+    }
   } else {
     str_o = str_i;
   }
@@ -80,7 +83,7 @@ const char* find_n_replace(const char* str_i, const char* str_f,
   const char* str_o = NULL;
 
   size_t str_i_consumed_len = 0;
-  size_t sub_pos = str_find(str_i, str_f, str_i_consumed_len);
+  long sub_pos = str_find(str_i, str_f, str_i_consumed_len);
   if (0 < sub_pos) {
     size_t str_i_len = strlen(str_i);
     size_t str_f_len = strlen(str_f);
@@ -99,13 +102,13 @@ const char* find_n_replace(const char* str_i, const char* str_f,
       str_append(str_i + str_i_cur_pos, &str_o_cur_ptr,
                  (sub_pos - str_i_cur_pos), str_i_len);
       str_o_cur_pos += (sub_pos - str_i_cur_pos);
-      cout << "str_o: " << str_o << endl;
+      //cout << "str_o: " << str_o << endl;
 
       // append the string str_f at sub_pos
       str_o_cur_ptr = (str_o + str_o_cur_pos);
       str_append(str_r, &str_o_cur_ptr, str_r_len, str_i_len);
       str_o_cur_pos += str_r_len;
-      cout << "str_o: " << str_o << endl;
+      //cout << "str_o: " << str_o << endl;
       // update string pos's
       str_i_cur_pos = sub_pos + str_f_len;
       str_i_consumed_len = str_i_cur_pos;
@@ -116,9 +119,14 @@ const char* find_n_replace(const char* str_i, const char* str_f,
                str_i_len);
         break;
       }
-
       sub_pos = str_find(str_i + str_i_cur_pos, str_f, str_i_consumed_len);
     } while (0 < sub_pos);
+    // copy the remaining str_i to str_o
+    if (str_i_cur_pos != str_i_len - 1) {
+      str_o_cur_ptr = (str_o + str_o_cur_pos);
+      str_append((str_i + str_i_cur_pos), &str_o_cur_ptr,
+                 (str_i_len - str_i_cur_pos), str_i_len);
+    }
   } else {
     str_o = str_i;
   }
