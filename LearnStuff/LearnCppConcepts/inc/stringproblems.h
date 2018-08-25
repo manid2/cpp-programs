@@ -30,17 +30,16 @@ const char* find_n_replace(const char* str_i, const char* str_f,
                            const char* str_r);
 
 //--
-void str_append(const char* src, const char* dst, size_t len);
-size_t str_find(const char* str_i, const char* str_f, size_t init_len);
+void str_append(const char* src, const char** dst, size_t len, size_t init_len);
+long str_find(const char* str_i, const char* str_f, size_t init_len);
 
 static int execute(int a, char** v) {
-  string str_i("I am happy, am. am am am");
+  string str_i("I am happy, am, am, am.");
   string str_f("am");
-  string str_r("nmn");
-
-  string str_o(find_n_replace(str_i, str_f, str_r));
+  string str_r("dasba");
 
   std::cout << "in : [" << str_i << "]" << std::endl;
+  string str_o(find_n_replace(str_i, str_f, str_r));
   std::cout << "out: [" << str_o << "]" << std::endl;
 }
 
