@@ -1,6 +1,6 @@
 # Programs for fun
 
-### Simple **Cpp programs** to:  
+## Simple **Cpp programs** to:  
 1 Learn Cpp techniques.  
 2 Solve simple problems.  
 3 Automate or simplify redundant tasks.  
@@ -34,6 +34,19 @@ cmake -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ../ProgramsFo
 6. Add a module to Create/Parse **XML** files.
 7. Add a module to Create/Parse **YML** files.
 8. Create a chat application in C++ with encryption.
+
+## Cpp Skills to learn
+
+* Classes and Object Oriented Concepts
+* Constructors and Destructors
+* Syntax and Language Fundamentals
+* Standard Template Library
+* Directives and Macros
+* Pointers and File Handling
+* Exceptions and Exception Handling
+* Functions and Virtual Functions
+* Operator Overloading
+* Miscellaneous
 
 License
 --------
