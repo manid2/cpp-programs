@@ -7,3 +7,4 @@ file(GLOB module_srcs ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 set(SRCS main.cpp ${module_srcs})
 
 add_executable(${MODULE_NAME} ${SRCS})
+target_link_libraries(${MODULE_NAME} aspell)

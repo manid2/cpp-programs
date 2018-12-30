@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 11)
 
 project(ProgramsForFun)
@@ -57,8 +57,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Add googletest directly to our build. This adds
 # the following targets: gtest, gtest_main, gmock
 # and gmock_main
-add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
-                 "${CMAKE_BINARY_DIR}/googletest-build")
+#add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+#                 "${CMAKE_BINARY_DIR}/googletest-build")
 
 # The gtest/gmock targets carry header search path
 # dependencies automatically when using CMake 2.8.11 or
@@ -72,8 +72,9 @@ endif()
 # etc. as appropriate
 
 # Use the below cmake command to generate the cmake eclipse project
-# cmake -G"Eclipse CDT4 - Unix Makefiles"\
-#       -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE\
-#       -DCMAKE_BUILD_TYPE=Debug\
-#       -DCMAKE_CXX_FLAGS="-std=c++11"\
+# cmake ../ProgramsForFun \
+#       -G"Eclipse CDT4 - Unix Makefiles" \
+#       -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE \
+#       -DCMAKE_BUILD_TYPE=Debug \
+#       -DCMAKE_CXX_FLAGS="-std=c++11" \
 #       -DCMAKE_CXX_COMPILER_ARG1=-std=c++11
