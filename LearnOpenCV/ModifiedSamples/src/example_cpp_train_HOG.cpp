@@ -75,8 +75,8 @@ void CTrainTestHOG::get_ftfv_dataset(cv::String ft, cv::String fv,
   this->get_cropped_faces(imgList);
   this->get_preprocessed_faces(imgList);
 
-  /* std::random_shuffle(imgList.begin(), imgList.end());*/  // optional
-  int trainPart = imgList.size() * 0.8;
+  std::random_shuffle(imgList.begin(), imgList.end());  // optional
+  int trainPart = imgList.size() * 0.8; // 80% for training
   trainData.reserve(trainPart);
   predData.reserve(imgList.size() - trainPart);
   ft_t::iterator ft_iter = m_FeatureList.find(ft);
@@ -99,7 +99,20 @@ void CTrainTestHOG::get_ft_dataset(cv::String ft,
                                    std::vector<cv::Mat>& predData,
                                    std::vector<int>& trainLabels,
                                    std::vector<int>& predLabels) {
-
+  fv_t &featureValueList = m_FeatureList.find(ft)->second;
+  for (auto fv : featureValueList) {
+    std::vector<cv::Mat> _trainData;
+    std::vector<cv::Mat> _predData;
+    std::vector<int> _trainLabels;
+    std::vector<int> _predLabels;
+    this->get_ftfv_dataset(ft, fv, _trainData, _predData, _trainLabels,
+                           _predLabels);
+    trainData.insert(trainData.end(), _trainData.begin(), _trainData.end());
+    predData.insert(predData.end(), _predData.begin(), _predData.end());
+    trainLabels.insert(trainLabels.end(), _trainLabels.begin(),
+                       _trainLabels.end());
+    predLabels.insert(predLabels.end(), _predLabels.begin(), _predLabels.end());
+  }
 }
 
 void CTrainTestHOG::computeHOGs(std::vector<cv::Mat> & imgHogList) {
@@ -114,7 +127,14 @@ void CTrainTestHOG::convert_to_ml(const std::vector<cv::Mat> & train_samples,
 void CTrainTestHOG::get_prediction_accuracy(const std::vector<int>& pLables,
                                             const std::vector<int>& rLables,
                                             float& accuracy) {
-
+// pred labels and result labels must be of same size
+  int misMatchCount = 0;
+  for (size_t i = 0; i < rLables.size(); ++i) {
+    if (rLables.at(i) != pLables.at(i))
+      misMatchCount++;
+  }
+  int correct = rLables.size() - misMatchCount;
+  accuracy = correct * 100.0f / rLables.size();
 }
 
 int CTrainTestHOG::Run(int run_times) {
