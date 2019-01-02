@@ -76,7 +76,7 @@ class CTrainTestHOG {
 
 static int execute(int argc, char **argv) {
   CTrainTestHOG ttHog;
-  return ttHog.Run(2);
+  return ttHog.Run(1);
 }
 
 }  // namespace PFF
