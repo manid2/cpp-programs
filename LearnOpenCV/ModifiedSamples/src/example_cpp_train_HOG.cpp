@@ -195,7 +195,7 @@ ErrorCode CTrainTestHOG::get_ft_dataset(cv::String ft,
   ErrorCode errCode = EXIT_SUCCESS;
   fv_t &featureValueList = m_FeatureList.find(ft)->second;
   for (auto fv : featureValueList) {
-    DEBUGLD("\t\t\tFeature value=[%s]\n", fv.c_str());
+    DEBUGLW("\t\t\tFeature value=[%s]\n", fv.c_str());
     std::vector<cv::Mat> _trainData;
     std::vector<cv::Mat> _predData;
     std::vector<int> _trainLabels;
@@ -212,9 +212,9 @@ ErrorCode CTrainTestHOG::get_ft_dataset(cv::String ft,
   }
   m_hogImgSize = trainData[0].size() / 8 * 8;
   m_HOG.winSize = m_hogImgSize;
-  DEBUGLD("\t\t\ttrainData.size()=[%ld], trainLabels.size()=[%ld]\n",
+  DEBUGLW("\t\t\ttrainData.size()=[%ld], trainLabels.size()=[%ld]\n",
           trainData.size(), trainLabels.size());
-  DEBUGLD("\t\t\tpredData.size()=[%ld], predLabels.size()=[%ld]\n",
+  DEBUGLW("\t\t\tpredData.size()=[%ld], predLabels.size()=[%ld]\n",
           predData.size(), predLabels.size());
   DEBUGLF("exit\n");
   return errCode;
@@ -309,12 +309,12 @@ int CTrainTestHOG::Run(int run_times) {
   ErrorCode errCode = EXIT_SUCCESS;
   do {  // for common error handling
     for (auto ft : m_FeatureList) {
-      DEBUGLD("\tFeature type=[%s]\n", ft.first.c_str());
+      DEBUGLW("\tFeature type=[%s]\n", ft.first.c_str());
       std::vector<float> predictionAccuracyList;
       predictionAccuracyList.reserve(run_times);
 
       for (int run = 0; run < run_times; ++run) {
-        DEBUGLD("\t\tRun=[%d]\n", run);
+        DEBUGLW("\t\tRun=[%d]\n", run);
         vector<Mat> trainData, predData;
         vector<int> trainLabels, predLabels;
         // get pre-processed face data
@@ -342,16 +342,16 @@ int CTrainTestHOG::Run(int run_times) {
         }
         trainLabels.resize(ml_train_data.rows);
         // train svm
-        DEBUGLD("\t\tTraining SVM - begin\n");
+        DEBUGLW("\t\tTraining SVM - begin\n");
         m_pSVM->train(ml_train_data, ROW_SAMPLE, trainLabels);
-        DEBUGLD("\t\tTraining SVM - end\n");
+        DEBUGLW("\t\tTraining SVM - end\n");
 
         // save the model
         cv::String svmModelFileName = cv::format("%s/cv4_svm_%s_model.yml",
                                                  getenv(FFR_DATASET_PATH),
                                                  ft.first.c_str());
         m_pSVM->save(svmModelFileName.c_str());
-        DEBUGLD("\t\tSaved SVM model=[%s]\n", svmModelFileName.c_str());
+        DEBUGLW("\t\tSaved SVM model=[%s]\n", svmModelFileName.c_str());
 
         // test the model
         // compute HOG for each pre-processed face
@@ -373,18 +373,18 @@ int CTrainTestHOG::Run(int run_times) {
         predLabels.resize(ml_pred_data.rows);
         //resultLabels.resize(ml_pred_data.rows);
         // test svm
-        DEBUGLD("\t\tTesting SVM - begin\n");
+        DEBUGLW("\t\tTesting SVM - begin\n");
         Mat responses_mat;
         m_pSVM->predict(ml_pred_data, responses_mat);
         for (size_t i = 0; i < ml_pred_data.rows; ++i) {
           resultLabels.push_back(responses_mat.at<int>(i));
         }
-        DEBUGLD("\t\tTesting SVM - end\n");
+        DEBUGLW("\t\tTesting SVM - end\n");
 
         // check the accuracy
         float accuracy = 0.0f;
         this->get_prediction_accuracy(predLabels, resultLabels, accuracy);
-        DEBUGLD("\t\tPrediction accuracy=[%lf]\n", accuracy);
+        DEBUGLW("\t\tPrediction accuracy=[%lf]\n", accuracy);
         predictionAccuracyList.push_back(accuracy);
       }
       // print the mean accuracy
@@ -392,7 +392,7 @@ int CTrainTestHOG::Run(int run_times) {
                                                 predictionAccuracyList.end(),
                                                 0.0);
       float mean_accuracy = sum_of_accuracies / predictionAccuracyList.size();
-      DEBUGLD("\t\tMean prediction accuracy=[%lf]\n", mean_accuracy);
+      DEBUGLW("\t\tMean prediction accuracy=[%lf]\n", mean_accuracy);
     }
   } while (0);
   DEBUGLF("exit\n");

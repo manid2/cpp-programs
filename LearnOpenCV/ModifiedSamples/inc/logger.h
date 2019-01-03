@@ -83,6 +83,11 @@ static String getLogDateTime(void) {
 #define FUNC_NAME "-"
 #endif
 
+// disable verbose debug info - begin
+#define DISABLE_DEBUG_INF
+#define DISABLE_DEBUG_FUNC
+// disable verbose debug info - end
+
 // TODO: add pid and tid
 #define DEBUGLE(FORMAT, ...) \
         fprintf(stdout, \
@@ -94,15 +99,23 @@ static String getLogDateTime(void) {
                 "%s, %s:%5d: %s::%s() WRN: " FORMAT ,\
                 TIME_STAMP, __FILENAME__, __LINE__, CLASS_NAME, FUNC_NAME, ##__VA_ARGS__)
 
-#define DEBUGLF(FORMAT, ...) \
+#ifdef DISABLE_DEBUG_FUNC
+# define DEBUGLF(FORMAT, ...)
+#else
+# define DEBUGLF(FORMAT, ...) \
         fprintf(stdout, \
                 "%s, %s:%5d: %s::%s() FUNC: " FORMAT ,\
                 TIME_STAMP, __FILENAME__, __LINE__, CLASS_NAME, FUNC_NAME, ##__VA_ARGS__)
+#endif // DISABLE_DEBUG_FUNC
 
-#define DEBUGLD(FORMAT, ...) \
+#ifdef DISABLE_DEBUG_INF
+# define DEBUGLD(FORMAT, ...)
+#else
+# define DEBUGLD(FORMAT, ...) \
         fprintf(stdout, \
                 "%s, %s:%5d: %s::%s() INF: " FORMAT ,\
                 TIME_STAMP, __FILENAME__, __LINE__, CLASS_NAME, FUNC_NAME, ##__VA_ARGS__)
+#endif // DISABLE_DEBUG_INF
 
 }
 
