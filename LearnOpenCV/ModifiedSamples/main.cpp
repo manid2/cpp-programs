@@ -11,7 +11,14 @@
 using namespace std;
 using namespace PFF;
 
+using namespace FFR; // for debug info
+
 int main(int argc, char **argv)
 {
-  return execute(argc, argv);
+  std::string _className(FUNC_NAME);
+  DEBUGLF("enter\n");
+  int ret = 0;
+  ret = execute(argc, argv);
+  DEBUGLF("exit\n");
+  return ret;
 }
