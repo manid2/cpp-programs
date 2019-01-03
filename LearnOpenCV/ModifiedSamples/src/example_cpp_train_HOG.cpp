@@ -374,7 +374,11 @@ int CTrainTestHOG::Run(int run_times) {
         //resultLabels.resize(ml_pred_data.rows);
         // test svm
         DEBUGLD("\t\tTesting SVM - begin\n");
-        m_pSVM->predict(ml_pred_data, resultLabels);
+        Mat responses_mat;
+        m_pSVM->predict(ml_pred_data, responses_mat);
+        for (size_t i = 0; i < ml_pred_data.rows; ++i) {
+          resultLabels.push_back(responses_mat.at<int>(i));
+        }
         DEBUGLD("\t\tTesting SVM - end\n");
 
         // check the accuracy
