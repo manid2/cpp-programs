@@ -14,7 +14,7 @@ using namespace std;
 using namespace FFR;
 
 #ifndef ENABLE_DEBUG_MODE
-# define ENABLE_DEBUG_MODE
+//# define ENABLE_DEBUG_MODE
 #endif // ENABLE_DEBUG_MODE
 
 namespace PFF {
