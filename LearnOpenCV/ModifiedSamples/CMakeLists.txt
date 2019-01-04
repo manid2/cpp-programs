@@ -7,7 +7,7 @@ file(GLOB module_srcs ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 set(SRCS main.cpp ${module_srcs})
 
 # debug macros
-#add_definitions(-DWITH_DUMMY_PAGE_DATA)
+add_definitions(-DDISABLE_DEBUG_FUNC -DDISABLE_DEBUG_INF)
 
 find_package( OpenCV REQUIRED )
 add_executable(${MODULE_NAME} ${SRCS})

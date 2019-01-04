@@ -84,8 +84,8 @@ static String getLogDateTime(void) {
 #endif
 
 // disable verbose debug info - begin
-#define DISABLE_DEBUG_INF
-#define DISABLE_DEBUG_FUNC
+//#define DISABLE_DEBUG_INF
+//#define DISABLE_DEBUG_FUNC
 // disable verbose debug info - end
 
 // TODO: add pid and tid

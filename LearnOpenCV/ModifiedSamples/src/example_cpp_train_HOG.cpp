@@ -22,6 +22,8 @@ namespace PFF {
 CTrainTestHOG::CTrainTestHOG()
     : _className(FUNC_NAME) {
   DEBUGLF("enter\n");
+  this->isPredict = false;
+  this->isSaveModel = false;
   this->initLists();
   this->m_faceCascade.load(
       cv::format("%s/haarcascade_frontalface_default.xml",
@@ -53,17 +55,10 @@ void CTrainTestHOG::initLists(void) {
 void CTrainTestHOG::initSVM() {
   DEBUGLF("enter\n");
   m_pSVM = SVM::create();
-  /* Default values to train SVM */
-  m_pSVM->setCoef0(0.0);
-  m_pSVM->setDegree(3);
-  m_pSVM->setTermCriteria(
-      TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 1000, 1e-3));
-  m_pSVM->setGamma(0);
   m_pSVM->setKernel(SVM::LINEAR);
-  m_pSVM->setNu(0.5);
-  m_pSVM->setP(0.1);  // for EPSILON_SVR, epsilon in loss function?
-  m_pSVM->setC(0.01);  // From paper, soft classifier
-  m_pSVM->setType(SVM::C_SVC);  // C_SVC; // EPSILON_SVR; // may be also NU_SVR; // do n-class classification
+  m_pSVM->setType(SVM::C_SVC);  // n-class classification
+  m_pSVM->setC(2.67);
+  m_pSVM->setGamma(5.383);
   DEBUGLF("exit\n");
 }
 
@@ -83,10 +78,10 @@ ErrorCode CTrainTestHOG::get_images(const cv::String & dirName,
         continue;
       }
 
-      /*if (showImages) {
-       imshow("image", img);
-       waitKey(1);
-       }*/
+      if (showImages) {
+        cv::imshow("image", img);
+        cv::waitKey(1);
+      }
       imgList.push_back(img);
     }
     DEBUGLD("\t\t\tImage list size=[%ld]\n", imgList.size());
@@ -106,7 +101,8 @@ ErrorCode CTrainTestHOG::get_cropped_faces(std::vector<cv::Mat> & imgList) {
   ErrorCode errCode = EXIT_SUCCESS;
   std::vector<cv::Mat> cropped_faces;
   //-- for each img
-  for (auto img : imgList) {
+  for (size_t i = 0; i < imgList.size(); ++i) {
+    cv::Mat &img = imgList.at(i);
     cv::equalizeHist(img, img);
     std::vector<Rect> faces_r;
     m_faceCascade.detectMultiScale(img, faces_r);
@@ -125,11 +121,12 @@ ErrorCode CTrainTestHOG::get_preprocessed_faces(
     std::vector<cv::Mat> & croppedFacesList) {
   DEBUGLF("enter\n");
   ErrorCode errCode = EXIT_SUCCESS;
-  for (auto cFace : croppedFacesList) {
-    cv::resize(cFace, cFace, cv::Size(128, 128));
+  for (size_t i = 0; i < croppedFacesList.size(); ++i) {
+    cv::Mat &cFace = croppedFacesList.at(i);
+    cv::resize(cFace, cFace, cv::Size(64, 64));
   }
   DEBUGLD("\t\t\tPre-Processed Faces in Image list=[%ld]\n",
-          croppedFacesList.size());
+      croppedFacesList.size());
   DEBUGLF("exit\n");
   return errCode;
 }
@@ -174,14 +171,14 @@ ErrorCode CTrainTestHOG::get_ftfv_dataset(cv::String ft, cv::String fv,
       trainLabels.push_back(label);
     }
     DEBUGLD("\t\t\ti=[%d], trainData.size()=[%ld], trainLabels.size()=[%ld]\n",
-            i, trainData.size(), trainLabels.size());
+        i, trainData.size(), trainLabels.size());
     for (; i < imgList.size(); ++i) {
       predData.push_back(imgList.at(i));
       predLabels.push_back(label);
     }
-    DEBUGLD("\t\t\ti=[%d], predData.size()=[%ld], predLabels.size()=[%ld]\n", i,
-            predData.size(), predLabels.size());
-  } while (0);
+    DEBUGLD("\t\t\ti=[%d], predData.size()=[%ld], predLabels.size()=[%ld]\n",
+        i, predData.size(), predLabels.size());
+  } while (0); 
   DEBUGLF("exit\n");
   return errCode;
 }
@@ -210,12 +207,13 @@ ErrorCode CTrainTestHOG::get_ft_dataset(cv::String ft,
                        _trainLabels.end());
     predLabels.insert(predLabels.end(), _predLabels.begin(), _predLabels.end());
   }
-  m_hogImgSize = trainData[0].size() / 8 * 8;
-  m_HOG.winSize = m_hogImgSize;
   DEBUGLW("\t\t\ttrainData.size()=[%ld], trainLabels.size()=[%ld]\n",
           trainData.size(), trainLabels.size());
   DEBUGLW("\t\t\tpredData.size()=[%ld], predLabels.size()=[%ld]\n",
           predData.size(), predLabels.size());
+  /*for (size_t i = 0; i < trainData.size(); ++i) {
+    cout << "i=" << i << " trainData.size: " << trainData.at(i).size() << endl;
+  }*/
   DEBUGLF("exit\n");
   return errCode;
 }
@@ -223,16 +221,19 @@ ErrorCode CTrainTestHOG::get_ft_dataset(cv::String ft,
 ErrorCode CTrainTestHOG::computeHOGs(std::vector<cv::Mat> & imgHogList) {
   DEBUGLF("enter\n");
   ErrorCode errCode = EXIT_SUCCESS;
+  HOGDescriptor hog;
   vector<Mat> hogMats;
   vector<float> descriptors;
   for (auto img : imgHogList) {
-    if (img.cols >= m_hogImgSize.width && img.rows >= m_hogImgSize.height) {
-      Rect r = Rect((img.cols - m_hogImgSize.width) / 2,
-                    (img.rows - m_hogImgSize.height) / 2, m_hogImgSize.width,
-                    m_hogImgSize.height);
-      m_HOG.compute(img(r), descriptors, Size(8, 8), Size(0, 0));
-      hogMats.push_back(Mat(descriptors).clone());
-    }
+    //cout << "img.size(): " << img.size() << " ";
+    //m_HOG.compute(img, descriptors);
+    hog.winSize = img.size() / 8 * 8;
+    hog.compute(img, descriptors);
+    //descriptors.resize(64);
+    cv::Mat descriptors_mat(Mat(descriptors).clone());
+    /*cout << "descriptors.size(): " << descriptors.size() << " ";
+    cout << "descriptors_mat.size(): " << descriptors_mat.size() << endl;*/
+    hogMats.push_back(descriptors_mat);
   }
   imgHogList.swap(hogMats);
   DEBUGLD("\t\t\timgHogList.size()=[%ld]\n", imgHogList.size());
@@ -346,53 +347,58 @@ int CTrainTestHOG::Run(int run_times) {
         m_pSVM->train(ml_train_data, ROW_SAMPLE, trainLabels);
         DEBUGLW("\t\tTraining SVM - end\n");
 
-        // save the model
-        cv::String svmModelFileName = cv::format("%s/cv4_svm_%s_model.yml",
-                                                 getenv(FFR_DATASET_PATH),
-                                                 ft.first.c_str());
-        m_pSVM->save(svmModelFileName.c_str());
-        DEBUGLW("\t\tSaved SVM model=[%s]\n", svmModelFileName.c_str());
+        if (this->isSaveModel) {
+          // save the model
+          cv::String svmModelFileName = cv::format("%s/cv4_svm_%s_model.yml",
+                                                   getenv(FFR_DATASET_PATH),
+                                                   ft.first.c_str());
+          m_pSVM->save(svmModelFileName.c_str());
+          DEBUGLW("\t\tSaved SVM model=[%s]\n", svmModelFileName.c_str());
+        }
 
-        // test the model
-        // compute HOG for each pre-processed face
-        errCode = this->computeHOGs(predData);
-        if (errCode != EXIT_SUCCESS) {
-          DEBUGLE("Error in computing HOGs for the feature type=[%s]\n",
-                  ft.first.c_str());
-          break;
-        }
-        // convert HOG feature vectors to SVM data
-        Mat ml_pred_data;
-        vector<int> resultLabels;
-        errCode = this->convert_to_ml(predData, ml_pred_data);
-        if (errCode != EXIT_SUCCESS) {
-          DEBUGLE("Error in converting to ml for the feature type=[%s]\n",
-                  ft.first.c_str());
-          break;
-        }
-        predLabels.resize(ml_pred_data.rows);
-        //resultLabels.resize(ml_pred_data.rows);
-        // test svm
-        DEBUGLW("\t\tTesting SVM - begin\n");
-        Mat responses_mat;
-        m_pSVM->predict(ml_pred_data, responses_mat);
-        for (size_t i = 0; i < ml_pred_data.rows; ++i) {
-          resultLabels.push_back(responses_mat.at<int>(i));
-        }
-        DEBUGLW("\t\tTesting SVM - end\n");
+        if (this->isPredict) {
+          // test the model
+          // compute HOG for each pre-processed face
+          errCode = this->computeHOGs(predData);
+          if (errCode != EXIT_SUCCESS) {
+            DEBUGLE("Error in computing HOGs for the feature type=[%s]\n",
+                    ft.first.c_str());
+            break;
+          }
+          // convert HOG feature vectors to SVM data
+          Mat ml_pred_data;
+          vector<int> resultLabels;
+          errCode = this->convert_to_ml(predData, ml_pred_data);
+          if (errCode != EXIT_SUCCESS) {
+            DEBUGLE("Error in converting to ml for the feature type=[%s]\n",
+                    ft.first.c_str());
+            break;
+          }
+          predLabels.resize(ml_pred_data.rows);
+          //resultLabels.resize(ml_pred_data.rows);
+          // test svm
+          DEBUGLW("\t\tTesting SVM - begin\n");
+          Mat responses_mat;
+          m_pSVM->predict(ml_pred_data, responses_mat);
+          for (size_t i = 0; i < ml_pred_data.rows; ++i) {
+            resultLabels.push_back(responses_mat.at<int>(i));
+          }
+          DEBUGLW("\t\tTesting SVM - end\n");
 
-        // check the accuracy
-        float accuracy = 0.0f;
-        this->get_prediction_accuracy(predLabels, resultLabels, accuracy);
-        DEBUGLW("\t\tPrediction accuracy=[%lf]\n", accuracy);
-        predictionAccuracyList.push_back(accuracy);
+          // check the accuracy
+          float accuracy = 0.0f;
+          this->get_prediction_accuracy(predLabels, resultLabels, accuracy);
+          DEBUGLW("\t\tPrediction accuracy=[%lf]\n", accuracy);
+          predictionAccuracyList.push_back(accuracy);
+        }
       }
-      // print the mean accuracy
-      float sum_of_accuracies = std::accumulate(predictionAccuracyList.begin(),
-                                                predictionAccuracyList.end(),
-                                                0.0);
-      float mean_accuracy = sum_of_accuracies / predictionAccuracyList.size();
-      DEBUGLW("\t\tMean prediction accuracy=[%lf]\n", mean_accuracy);
+      if (this->isPredict) {
+        // print the mean accuracy
+        float sum_of_accuracies = std::accumulate(
+            predictionAccuracyList.begin(), predictionAccuracyList.end(), 0.0);
+        float mean_accuracy = sum_of_accuracies / predictionAccuracyList.size();
+        DEBUGLW("\t\tMean prediction accuracy=[%lf]\n", mean_accuracy);
+      }
     }
   } while (0);
   DEBUGLF("exit\n");

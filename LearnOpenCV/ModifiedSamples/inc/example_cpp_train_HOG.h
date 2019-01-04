@@ -57,6 +57,12 @@ class CTrainTestHOG {
 
   /* entry point into this class operations */
   int Run(int run_times = 1);
+  void enablePrediction(void) /*const*/ {
+    this->isPredict = true;
+  }
+  void saveModel(void) /*const*/ {
+    this->isSaveModel = true;
+  }
 
  private:
   void initLists(void);
@@ -68,14 +74,19 @@ class CTrainTestHOG {
   fv_t m_GenderList;
   ft_t m_FeatureList;
 
+  bool isPredict;
+  bool isSaveModel;
+
   cv::Size m_hogImgSize;
-  cv::HOGDescriptor m_HOG;
+  //cv::HOGDescriptor m_HOG;
   cv::Ptr<cv::ml::SVM> m_pSVM;
   cv::CascadeClassifier m_faceCascade;
 };
 
 static int execute(int argc, char **argv) {
   CTrainTestHOG ttHog;
+  ttHog.enablePrediction();
+  ttHog.saveModel();
   return ttHog.Run(1);
 }
 
