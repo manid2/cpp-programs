@@ -1,0 +1,45 @@
+01/06 01:29:38198119, example_cpp_train_HOG.cpp:  313: CTrainTestHOG::Run() WRN: 	Feature type=[Age]
+01/06 01:29:38198181, example_cpp_train_HOG.cpp:  318: CTrainTestHOG::Run() WRN: 		Run=[0]
+01/06 01:29:38198189, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[adult]
+01/06 01:29:45902624, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[child]
+01/06 01:29:52888399, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[old]
+01/06 01:29:57152307, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[teen]
+01/06 01:30:05594801, example_cpp_train_HOG.cpp:  211: CTrainTestHOG::get_ft_dataset() WRN: 			trainData.size()=[139], trainLabels.size()=[139]
+01/06 01:30:05594845, example_cpp_train_HOG.cpp:  213: CTrainTestHOG::get_ft_dataset() WRN: 			predData.size()=[36], predLabels.size()=[36]
+01/06 01:30:05619904, example_cpp_train_HOG.cpp:  346: CTrainTestHOG::Run() WRN: 		Training SVM - begin
+01/06 01:30:05645967, example_cpp_train_HOG.cpp:  348: CTrainTestHOG::Run() WRN: 		Training SVM - end
+01/06 01:30:05872152, example_cpp_train_HOG.cpp:  356: CTrainTestHOG::Run() WRN: 		Saved SVM model=[/home/manid2/Documents/eclipse-workspace/ProgramsForFun_top/FFR_dataset/cv4_svm_Age_model.xml]
+01/06 01:30:05881263, example_cpp_train_HOG.cpp:  380: CTrainTestHOG::Run() WRN: 		Testing SVM - begin
+01/06 01:30:05883196, example_cpp_train_HOG.cpp:  386: CTrainTestHOG::Run() WRN: 		Testing SVM - end
+01/06 01:30:05883245, example_cpp_train_HOG.cpp:  391: CTrainTestHOG::Run() WRN: 		Prediction accuracy=[8.333333]
+01/06 01:30:05883356, example_cpp_train_HOG.cpp:  400: CTrainTestHOG::Run() WRN: 		Mean prediction accuracy=[8.333333]
+01/06 01:30:05883385, example_cpp_train_HOG.cpp:  313: CTrainTestHOG::Run() WRN: 	Feature type=[Emotion]
+01/06 01:30:05883403, example_cpp_train_HOG.cpp:  318: CTrainTestHOG::Run() WRN: 		Run=[0]
+01/06 01:30:05883424, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[anger]
+01/06 01:30:12510712, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[contempt]
+01/06 01:30:19367774, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[happy]
+01/06 01:30:26533021, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[neutral]
+01/06 01:30:35838272, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[sad]
+01/06 01:30:46368863, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[surprise]
+01/06 01:30:58452101, example_cpp_train_HOG.cpp:  211: CTrainTestHOG::get_ft_dataset() WRN: 			trainData.size()=[282], trainLabels.size()=[282]
+01/06 01:30:58452158, example_cpp_train_HOG.cpp:  213: CTrainTestHOG::get_ft_dataset() WRN: 			predData.size()=[75], predLabels.size()=[75]
+01/06 01:30:58495374, example_cpp_train_HOG.cpp:  346: CTrainTestHOG::Run() WRN: 		Training SVM - begin
+01/06 01:30:58606177, example_cpp_train_HOG.cpp:  348: CTrainTestHOG::Run() WRN: 		Training SVM - end
+01/06 01:30:59123240, example_cpp_train_HOG.cpp:  356: CTrainTestHOG::Run() WRN: 		Saved SVM model=[/home/manid2/Documents/eclipse-workspace/ProgramsForFun_top/FFR_dataset/cv4_svm_Emotion_model.xml]
+01/06 01:30:59142698, example_cpp_train_HOG.cpp:  380: CTrainTestHOG::Run() WRN: 		Testing SVM - begin
+01/06 01:30:59145272, example_cpp_train_HOG.cpp:  386: CTrainTestHOG::Run() WRN: 		Testing SVM - end
+01/06 01:30:59145298, example_cpp_train_HOG.cpp:  391: CTrainTestHOG::Run() WRN: 		Prediction accuracy=[6.666667]
+01/06 01:30:59145437, example_cpp_train_HOG.cpp:  400: CTrainTestHOG::Run() WRN: 		Mean prediction accuracy=[6.666667]
+01/06 01:30:59145448, example_cpp_train_HOG.cpp:  313: CTrainTestHOG::Run() WRN: 	Feature type=[Gender]
+01/06 01:30:59145454, example_cpp_train_HOG.cpp:  318: CTrainTestHOG::Run() WRN: 		Run=[0]
+01/06 01:30:59145465, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[female]
+01/06 01:31:10304831, example_cpp_train_HOG.cpp:  195: CTrainTestHOG::get_ft_dataset() WRN: 			Feature value=[male]
+01/06 01:31:17647849, example_cpp_train_HOG.cpp:  211: CTrainTestHOG::get_ft_dataset() WRN: 			trainData.size()=[77], trainLabels.size()=[77]
+01/06 01:31:17648028, example_cpp_train_HOG.cpp:  213: CTrainTestHOG::get_ft_dataset() WRN: 			predData.size()=[20], predLabels.size()=[20]
+01/06 01:31:17667110, example_cpp_train_HOG.cpp:  346: CTrainTestHOG::Run() WRN: 		Training SVM - begin
+01/06 01:31:17672731, example_cpp_train_HOG.cpp:  348: CTrainTestHOG::Run() WRN: 		Training SVM - end
+01/06 01:31:17806602, example_cpp_train_HOG.cpp:  356: CTrainTestHOG::Run() WRN: 		Saved SVM model=[/home/manid2/Documents/eclipse-workspace/ProgramsForFun_top/FFR_dataset/cv4_svm_Gender_model.xml]
+01/06 01:31:17810603, example_cpp_train_HOG.cpp:  380: CTrainTestHOG::Run() WRN: 		Testing SVM - begin
+01/06 01:31:17810819, example_cpp_train_HOG.cpp:  386: CTrainTestHOG::Run() WRN: 		Testing SVM - end
+01/06 01:31:17810917, example_cpp_train_HOG.cpp:  391: CTrainTestHOG::Run() WRN: 		Prediction accuracy=[45.000000]
+01/06 01:31:17811044, example_cpp_train_HOG.cpp:  400: CTrainTestHOG::Run() WRN: 		Mean prediction accuracy=[45.000000]

@@ -349,7 +349,7 @@ int CTrainTestHOG::Run(int run_times) {
 
         if (this->isSaveModel) {
           // save the model
-          cv::String svmModelFileName = cv::format("%s/cv4_svm_%s_model.yml",
+          cv::String svmModelFileName = cv::format("%s/cv4_svm_%s_model.xml",
                                                    getenv(FFR_DATASET_PATH),
                                                    ft.first.c_str());
           m_pSVM->save(svmModelFileName.c_str());
