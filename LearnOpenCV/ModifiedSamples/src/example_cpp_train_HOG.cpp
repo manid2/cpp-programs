@@ -22,6 +22,22 @@ namespace PFF {
 CTrainTestHOG::CTrainTestHOG()
     : _className(FUNC_NAME) {
   DEBUGLF("enter\n");
+  //-- test models flow
+  this->isTestModels = false;
+  this->isShowImage = false;
+
+  // should recognize all features by default
+  m_features.insert(PFF::Age);
+  m_features.insert(PFF::Emotion);
+  m_features.insert(PFF::Gender);
+
+  // putText params
+  m_fontFace = cv::FONT_HERSHEY_SIMPLEX;
+  m_fontScale = 0.75f;
+  m_fontColor = Scalar(240, 40, 240);
+  m_lineType = 8;
+
+  //-- train models flow
   this->isPredict = false;
   this->isSaveModel = false;
   this->initLists();
@@ -83,16 +99,14 @@ ErrorCode CTrainTestHOG::get_images(const cv::String & dirName,
         cv::waitKey(1);
       }
       imgList.push_back(img);
-    }
-    DEBUGLD("\t\t\tImage list size=[%ld]\n", imgList.size());
+    }DEBUGLD("\t\t\tImage list size=[%ld]\n", imgList.size());
   } catch (cv::Exception& e) {
     errCode = EXIT_FAILURE;
     DEBUGLE("\t*** An exception occurred=[%s] ***\n", e.what());
   } catch (...) {
     errCode = EXIT_FAILURE;
     DEBUGLE("\t*** An unknown exception occurred ***\n");
-  }
-  DEBUGLF("exit\n");
+  }DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -112,8 +126,7 @@ ErrorCode CTrainTestHOG::get_cropped_faces(std::vector<cv::Mat> & imgList) {
     }
   }
   imgList.swap(cropped_faces);
-  DEBUGLD("\t\t\tCropped Faces in Image list=[%ld]\n", imgList.size());
-  DEBUGLF("exit\n");
+  DEBUGLD("\t\t\tCropped Faces in Image list=[%ld]\n", imgList.size());DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -124,10 +137,8 @@ ErrorCode CTrainTestHOG::get_preprocessed_faces(
   for (size_t i = 0; i < croppedFacesList.size(); ++i) {
     cv::Mat &cFace = croppedFacesList.at(i);
     cv::resize(cFace, cFace, cv::Size(64, 64));
-  }
-  DEBUGLD("\t\t\tPre-Processed Faces in Image list=[%ld]\n",
-      croppedFacesList.size());
-  DEBUGLF("exit\n");
+  }DEBUGLD("\t\t\tPre-Processed Faces in Image list=[%ld]\n",
+      croppedFacesList.size());DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -152,8 +163,7 @@ ErrorCode CTrainTestHOG::get_ftfv_dataset(cv::String ft, cv::String fv,
       errCode = EXIT_FAILURE;
       DEBUGLE("Error img list is empty!\n");
       break;
-    }
-    DEBUGLD("\t\t\timgList.size()=[%ld]\n", imgList.size());
+    }DEBUGLD("\t\t\timgList.size()=[%ld]\n", imgList.size());
     std::random_shuffle(imgList.begin(), imgList.end());  // optional
     int trainPart = imgList.size() * 0.8;  // 80% for training
     int predPart = imgList.size() - trainPart;  // 20% for predicting
@@ -169,17 +179,14 @@ ErrorCode CTrainTestHOG::get_ftfv_dataset(cv::String ft, cv::String fv,
     for (; i < trainPart; ++i) {
       trainData.push_back(imgList.at(i));
       trainLabels.push_back(label);
-    }
-    DEBUGLD("\t\t\ti=[%d], trainData.size()=[%ld], trainLabels.size()=[%ld]\n",
+    }DEBUGLD("\t\t\ti=[%d], trainData.size()=[%ld], trainLabels.size()=[%ld]\n",
         i, trainData.size(), trainLabels.size());
     for (; i < imgList.size(); ++i) {
       predData.push_back(imgList.at(i));
       predLabels.push_back(label);
-    }
-    DEBUGLD("\t\t\ti=[%d], predData.size()=[%ld], predLabels.size()=[%ld]\n",
+    }DEBUGLD("\t\t\ti=[%d], predData.size()=[%ld], predLabels.size()=[%ld]\n",
         i, predData.size(), predLabels.size());
-  } while (0); 
-  DEBUGLF("exit\n");
+  } while (0);DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -212,8 +219,8 @@ ErrorCode CTrainTestHOG::get_ft_dataset(cv::String ft,
   DEBUGLW("\t\t\tpredData.size()=[%ld], predLabels.size()=[%ld]\n",
           predData.size(), predLabels.size());
   /*for (size_t i = 0; i < trainData.size(); ++i) {
-    cout << "i=" << i << " trainData.size: " << trainData.at(i).size() << endl;
-  }*/
+   cout << "i=" << i << " trainData.size: " << trainData.at(i).size() << endl;
+   }*/
   DEBUGLF("exit\n");
   return errCode;
 }
@@ -232,12 +239,11 @@ ErrorCode CTrainTestHOG::computeHOGs(std::vector<cv::Mat> & imgHogList) {
     //descriptors.resize(64);
     cv::Mat descriptors_mat(Mat(descriptors).clone());
     /*cout << "descriptors.size(): " << descriptors.size() << " ";
-    cout << "descriptors_mat.size(): " << descriptors_mat.size() << endl;*/
+     cout << "descriptors_mat.size(): " << descriptors_mat.size() << endl;*/
     hogMats.push_back(descriptors_mat);
   }
   imgHogList.swap(hogMats);
-  DEBUGLD("\t\t\timgHogList.size()=[%ld]\n", imgHogList.size());
-  DEBUGLF("exit\n");
+  DEBUGLD("\t\t\timgHogList.size()=[%ld]\n", imgHogList.size());DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -281,10 +287,8 @@ ErrorCode CTrainTestHOG::convert_to_ml(
     } catch (...) {
       errCode = EXIT_FAILURE;
       DEBUGLE("\t*** An unknown exception occurred ***\n");
-    }
-    DEBUGLD("\t\t\ttrainData.rows=[%d]\n", trainData.rows);
-  } while (0);
-  DEBUGLF("exit\n");
+    }DEBUGLD("\t\t\ttrainData.rows=[%d]\n", trainData.rows);
+  } while (0);DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -305,10 +309,218 @@ ErrorCode CTrainTestHOG::get_prediction_accuracy(
   return errCode;
 }
 
+ErrorCode CTrainTestHOG::readImageFromFile(const std::string& fileName,
+                                            cv::Mat& img_i, cv::Mat& img_o) {
+  DEBUGLF("enter\n");
+  ErrorCode err = 0;
+  do {  // for common error handling
+    cv::Mat img = cv::imread(fileName);  // load image in default
+    img_i = img;
+    this->readImage(img);
+    img_o = img;
+    // currently using this just for unit testing, will extend in future
+  } while (0);
+  DEBUGLF("exit\n");
+  return err;
+}
+
+ErrorCode CTrainTestHOG::readImage(cv::Mat& img) {
+  DEBUGLF("enter\n");
+  ErrorCode errCode = EXIT_SUCCESS;
+  do {  // for common error handling
+    // Detect faces in the image
+    cv::Mat frame_gray;
+    std::vector<Rect> faces;
+    errCode = this->detectFace(img, faces, frame_gray);
+
+    // Recognize facial features
+    m_resultsVec = ResultsVec(faces.size());
+    this->recognizeFeatures(m_features, m_resultsVec, frame_gray, faces);
+
+    // Draw the results on the original image
+    this->drawResults(img, faces, m_features, m_resultsVec);
+  } while (0);
+  DEBUGLF("exit\n");
+  return errCode;
+}
+
+ErrorCode CTrainTestHOG::detectFace(cv::Mat& frame,
+                                    std::vector<cv::Rect>& faces,
+                                    cv::Mat& frame_gray) {
+  DEBUGLF("enter\n");
+  ErrorCode errCode = EXIT_SUCCESS;
+  do {  // for common error handling
+    // Pre-process input frame for face detection
+    cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
+    equalizeHist(frame_gray, frame_gray);
+    // Detect faces
+    this->m_faceCascade.detectMultiScale(frame_gray, faces);
+  } while (0);
+  DEBUGLF("exit\n");
+  return errCode;
+}
+
+ErrorCode CTrainTestHOG::recognizeFeatures(const FeaturesSet& features,
+                                           ResultsVec& results,
+                                           cv::Mat& frame_gray,
+                                           std::vector<cv::Rect>& faces) {
+  DEBUGLF("enter\n");
+  ErrorCode errCode = EXIT_SUCCESS;
+  do {  // for common error handling
+    cv::Mat face_mat;  // dont modify frame_gray
+    for (size_t fa = 0; fa < faces.size(); fa++) {
+      // 1. crop the face from the frame
+      face_mat = frame_gray(faces.at(fa));
+
+      // 2. resize to 64,64
+      cv::resize(face_mat, face_mat, cv::Size(64, 64));
+
+      // 3. get HOG fv
+      cv::Mat hogMat;
+      this->computeHOG(face_mat, hogMat);
+
+      // 4. convert hog to ml for SVM
+      cv::Mat mlMat;
+      this->convertToML(hogMat, mlMat);
+
+      // 4. make predictions for each feature
+      // TODO
+    }
+  } while (0); DEBUGLF("exit\n");
+  return errCode;
+}
+
+ErrorCode CTrainTestHOG::drawResults(cv::Mat& frame,
+                                     const std::vector<cv::Rect>& faces,
+                                     const FeaturesSet& features,
+                                     const ResultsVec& results) {
+  DEBUGLF("enter\n");
+  ErrorCode errCode = EXIT_SUCCESS;
+  do {  // for common error handling
+    for (size_t fa = 0; fa < faces.size(); fa++) {
+      // 1. Draw ellipses around the faces
+      const Rect& face_rect = faces.at(fa);
+      Point center(face_rect.x + face_rect.width * 0.5,
+                   face_rect.y + face_rect.height * 0.5);
+      ellipse(frame, center,
+              Size(face_rect.width * 0.5, face_rect.height * 0.5), 0, 0, 360,
+              Scalar(255, 0, 0), 4, 8, 0);
+      // 2. Draw features results text near the faces
+      int li = 0;
+      // for each face in the results vector iterate through the results pair set
+      for (auto res_pair : results.at(fa)) {
+        // extract results data here
+        const PFF::Feature& f = res_pair.first;
+        const std::string& res = res_pair.second;
+
+        // put text on the frame
+        putText(frame, format("%-10s: %s", enum2str(f).c_str(), res.c_str()),
+                Point(face_rect.x, face_rect.y + li), m_fontFace, m_fontScale,
+                m_fontColor, 2);
+        li += 22;
+      }
+    }
+  } while (0); DEBUGLF("exit\n");
+  return errCode;
+}
+
+ErrorCode CTrainTestHOG::computeHOG(const cv::Mat& img, cv::Mat& hogMat) {
+  DEBUGLF("enter\n");
+  ErrorCode errCode = EXIT_SUCCESS;
+  do {  // for common error handling
+    vector<float> descriptors;
+    cv::HOGDescriptor hog;
+    hog.winSize = img.size() / 8 * 8;
+    hog.compute(img, descriptors);
+    hogMat = Mat(descriptors).clone();
+  } while (0);
+  DEBUGLF("exit\n");
+  return errCode;
+}
+
+ErrorCode CTrainTestHOG::convertToML(const cv::Mat& hogMat, cv::Mat& mlMat) {
+  DEBUGLF("enter\n");
+  ErrorCode err = EXIT_SUCCESS;
+  do {  // for common error handling
+    if (hogMat.empty()) {
+      err = EXIT_FAILURE;
+      break;
+    }
+    //-- Convert hog features data to ml data
+    const int cols = (int) std::max(hogMat.cols, hogMat.rows);
+    Mat tmp(1, cols, CV_32FC1);  //< used for transposition if needed
+    mlMat = Mat(1, cols, CV_32FC1);
+    try {
+      CV_Assert(hogMat.cols == 1 || hogMat.rows == 1);
+      if (hogMat.cols == 1) {
+        cv::transpose(hogMat, tmp);
+        tmp.copyTo(mlMat.row((int) 0));
+      } else if (hogMat.rows == 1) {
+        hogMat.copyTo(mlMat.row((int) 0));
+      }
+    } catch (cv::Exception& e) {
+      err = EXIT_FAILURE;
+      DEBUGLE("\t*** An exception occurred=[%s] ***\n", e.what());
+    } catch (...) {
+      err = EXIT_FAILURE;
+      DEBUGLE("\t*** An unknown exception occurred ***\n");
+    }
+    //DEBUGLD("\t\t\tmlMat.cols=[%d], mlMat.type()=[%d]\n", mlMat.cols, mlMat.type());
+  } while (0);
+  DEBUGLF("exit\n");
+  return err;
+}
+
+ErrorCode CTrainTestHOG::testModelsOnSingleImage() {
+  DEBUGLF("enter\n");
+  ErrorCode errCode = EXIT_SUCCESS;
+  do {  // for common error handling
+    if (this->m_inFile.empty()) {
+      DEBUGLE("!!! enter input image file path !!!\n");
+      break;
+    }
+    if (this->m_outFile.empty()) {
+      this->m_outFile = this->m_inFile;
+      this->m_outFile.insert(0, "out_");
+      DEBUGLW("outFile path is empty using default file path=[%s]\n",
+              this->m_outFile.c_str());
+    }
+    DEBUGLW("*** input params - begin ***\n");
+    DEBUGLW("inFile  path is file path=[%s]\n", this->m_inFile.c_str());
+    DEBUGLW("outFile path is file path=[%s]\n", this->m_outFile.c_str());
+    DEBUGLW("show output image=[%s]\n", this->isShowImage ? "yes" : "no");
+    DEBUGLW("*** input params - end ***\n");
+
+    // TODO, YTI below steps
+    //-- load the svm models
+
+    //-- read input image from file and write output image
+    cv::Mat img_i, img_o;
+    this->readImageFromFile(this->m_inFile, img_i, img_o);
+    if(this->isShowImage) {
+      // TODO: show out image
+    }
+    // save output image
+  } while (0);
+  DEBUGLF("exit\n");
+  return errCode;
+}
+
 int CTrainTestHOG::Run(int run_times) {
   DEBUGLF("enter\n");
   ErrorCode errCode = EXIT_SUCCESS;
   do {  // for common error handling
+    //-- test models on a single image flow
+    if (this->isTestModels) {
+      DEBUGLE("test models on a single image flow\n");
+      errCode = this->testModelsOnSingleImage();
+      if (errCode != EXIT_SUCCESS) {
+        DEBUGLE("Error in testing svm models on single image\n");
+      }
+      break;
+    }
+    //-- train models flow (default)
+    DEBUGLE("train models flow (default)\n");
     for (auto ft : m_FeatureList) {
       DEBUGLW("\tFeature type=[%s]\n", ft.first.c_str());
       std::vector<float> predictionAccuracyList;
@@ -400,8 +612,7 @@ int CTrainTestHOG::Run(int run_times) {
         DEBUGLW("\t\tMean prediction accuracy=[%lf]\n", mean_accuracy);
       }
     }
-  } while (0);
-  DEBUGLF("exit\n");
+  } while (0);DEBUGLF("exit\n");
   return errCode;
 }
 
