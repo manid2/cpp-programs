@@ -19,7 +19,7 @@
 #include <set>
 #include <numeric>      // std::accumulate
 
-#define FFR_DATASET_PATH "FFR_DATASET_PATH"
+#define FFR_DATA_PATH "FFR_DATA_PATH"
 
 namespace PFF {
 
@@ -117,6 +117,7 @@ class CTrainTestHOG {
   int m_lineType;
 
   ResultsVec m_resultsVec;
+  std::vector<cv::Ptr<cv::ml::StatModel> > m_pSVMModels;
 
   ErrorCode testModelsOnSingleImage(void);
   ErrorCode readImageFromFile(const std::string& fileName, cv::Mat& img_i,
@@ -135,6 +136,8 @@ class CTrainTestHOG {
  private:
   void initLists(void);
   void initSVM(void);
+
+  ErrorCode loadSVM(const FFR::String& _fn, int i = 0);
 
  private:
   fv_t m_AgeList;

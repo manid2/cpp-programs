@@ -43,7 +43,7 @@ CTrainTestHOG::CTrainTestHOG()
   this->initLists();
   this->m_faceCascade.load(
       cv::format("%s/haarcascade_frontalface_default.xml",
-                 getenv(FFR_DATASET_PATH)));
+                 getenv(FFR_DATA_PATH)));
   this->initSVM();
   DEBUGLF("exit\n");
 }
@@ -150,7 +150,7 @@ ErrorCode CTrainTestHOG::get_ftfv_dataset(cv::String ft, cv::String fv,
   DEBUGLF("enter\n");
   ErrorCode errCode = EXIT_SUCCESS;
   do {  // for common error handling
-    cv::String folderName = cv::format("%s/%s/%s", getenv(FFR_DATASET_PATH),
+    cv::String folderName = cv::format("%s/%s/%s", getenv(FFR_DATA_PATH),
                                        ft.c_str(), fv.c_str());
     DEBUGLD("\t\t\tGetting dataset from=[%s]\n", folderName.c_str());
     std::vector<cv::Mat> imgList;
@@ -310,7 +310,7 @@ ErrorCode CTrainTestHOG::get_prediction_accuracy(
 }
 
 ErrorCode CTrainTestHOG::readImageFromFile(const std::string& fileName,
-                                            cv::Mat& img_i, cv::Mat& img_o) {
+                                           cv::Mat& img_i, cv::Mat& img_o) {
   DEBUGLF("enter\n");
   ErrorCode err = 0;
   do {  // for common error handling
@@ -319,8 +319,7 @@ ErrorCode CTrainTestHOG::readImageFromFile(const std::string& fileName,
     this->readImage(img);
     img_o = img;
     // currently using this just for unit testing, will extend in future
-  } while (0);
-  DEBUGLF("exit\n");
+  } while (0); DEBUGLF("exit\n");
   return err;
 }
 
@@ -339,8 +338,7 @@ ErrorCode CTrainTestHOG::readImage(cv::Mat& img) {
 
     // Draw the results on the original image
     this->drawResults(img, faces, m_features, m_resultsVec);
-  } while (0);
-  DEBUGLF("exit\n");
+  } while (0); DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -355,8 +353,7 @@ ErrorCode CTrainTestHOG::detectFace(cv::Mat& frame,
     equalizeHist(frame_gray, frame_gray);
     // Detect faces
     this->m_faceCascade.detectMultiScale(frame_gray, faces);
-  } while (0);
-  DEBUGLF("exit\n");
+  } while (0); DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -383,8 +380,15 @@ ErrorCode CTrainTestHOG::recognizeFeatures(const FeaturesSet& features,
       cv::Mat mlMat;
       this->convertToML(hogMat, mlMat);
 
-      // 4. make predictions for each feature
-      // TODO
+      // 5. make predictions for each feature
+      // for each feature call its corresponding svm model and predict
+      ft_t::iterator iter_ft = m_FeatureList.begin();
+      for (size_t i = 0; i < m_features.size(); ++i, ++iter_ft) {
+        float res = m_pSVMModels.at(i)->predict(mlMat);
+        string res_s(*std::next(iter_ft->second.begin(), (int) res));
+        ResultPair res_pair((PFF::Feature)i, res_s);
+        results.at(fa).insert(res_pair);
+      }
     }
   } while (0); DEBUGLF("exit\n");
   return errCode;
@@ -420,7 +424,7 @@ ErrorCode CTrainTestHOG::drawResults(cv::Mat& frame,
         li += 22;
       }
     }
-  } while (0); DEBUGLF("exit\n");
+  } while (0);DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -433,8 +437,7 @@ ErrorCode CTrainTestHOG::computeHOG(const cv::Mat& img, cv::Mat& hogMat) {
     hog.winSize = img.size() / 8 * 8;
     hog.compute(img, descriptors);
     hogMat = Mat(descriptors).clone();
-  } while (0);
-  DEBUGLF("exit\n");
+  } while (0); DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -466,8 +469,28 @@ ErrorCode CTrainTestHOG::convertToML(const cv::Mat& hogMat, cv::Mat& mlMat) {
       DEBUGLE("\t*** An unknown exception occurred ***\n");
     }
     //DEBUGLD("\t\t\tmlMat.cols=[%d], mlMat.type()=[%d]\n", mlMat.cols, mlMat.type());
+  } while (0); DEBUGLF("exit\n");
+  return err;
+}
+
+ErrorCode CTrainTestHOG::loadSVM(const FFR::String& featureName, int i) {
+  DEBUGLF("enter\n");
+  ErrorCode err = EXIT_SUCCESS;
+  do {  // for common error handling
+    cv::String fn("");  //= cwd;
+    fn += cv::format("%s/cv4_svm_%s_model.yml", getenv(FFR_DATA_PATH),
+                     featureName.c_str());
+    DEBUGLE("loading the classifier for i=[%d], [%s]\n", i, fn.c_str());
+    cv::Ptr<cv::ml::SVM> svmPtr = cv::Algorithm::load<SVM>(fn);
+    int var_count = svmPtr->getVarCount();
+    if (!var_count /*|| !sv_count*/) {
+      DEBUGLE("Could not read the classifier [%s], " "var_count=[%d]\n",
+              fn.c_str(), var_count/*, sv_count*/);
+      err = EXIT_FAILURE;
+      break;
+    }
+    m_pSVMModels.push_back(svmPtr);
   } while (0);
-  DEBUGLF("exit\n");
   return err;
 }
 
@@ -491,18 +514,29 @@ ErrorCode CTrainTestHOG::testModelsOnSingleImage() {
     DEBUGLW("show output image=[%s]\n", this->isShowImage ? "yes" : "no");
     DEBUGLW("*** input params - end ***\n");
 
-    // TODO, YTI below steps
     //-- load the svm models
+    m_pSVMModels.reserve(this->m_FeatureList.size());
+    ft_t::iterator f_iter = this->m_FeatureList.begin();
+    for (int i = 0; f_iter != this->m_FeatureList.end(); ++f_iter, ++i) {
+      this->loadSVM(f_iter->first, i);
+    }
 
     //-- read input image from file and write output image
     cv::Mat img_i, img_o;
     this->readImageFromFile(this->m_inFile, img_i, img_o);
-    if(this->isShowImage) {
-      // TODO: show out image
+    if (this->isShowImage) {
+      // Display the resulting frame
+      imshow("output", img_o);
+
+      // Press  ESC or 'q' on keyboard to exit
+      char c = (char) waitKey(0);
+      if (c == 27 || c == 'q') {
+        imwrite(m_outFile, img_o);
+        DEBUGLD("Pressed=[0x%x], reading video stream or file exit\n", (int )c);
+      }
     }
     // save output image
-  } while (0);
-  DEBUGLF("exit\n");
+  } while (0); DEBUGLF("exit\n");
   return errCode;
 }
 
@@ -562,7 +596,7 @@ int CTrainTestHOG::Run(int run_times) {
         if (this->isSaveModel) {
           // save the model
           cv::String svmModelFileName = cv::format("%s/cv4_svm_%s_model.xml",
-                                                   getenv(FFR_DATASET_PATH),
+                                                   getenv(FFR_DATA_PATH),
                                                    ft.first.c_str());
           m_pSVM->save(svmModelFileName.c_str());
           DEBUGLW("\t\tSaved SVM model=[%s]\n", svmModelFileName.c_str());
