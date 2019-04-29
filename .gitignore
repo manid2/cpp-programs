@@ -70,6 +70,7 @@ Thumbs.db
 *.opensdf
 *.vcxproj
 *vcxproj.*
+.vscode
 
 # Eclipse generated files
 .project
