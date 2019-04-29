@@ -5,24 +5,23 @@
  *      Author: mani
  */
 
-
-#include "producer.h"
-#include "consumer.h"
-
 #include "test_precomp.h"
+#include "producer.h"
+
+using namespace PFF;
+
+namespace {
 
 class ProducerMock : public Producer {
-public:
-	MOCK_CONST_METHOD1( getDomainFromUrl, std::string(const std::string & url) );
+ public:
+  MOCK_CONST_METHOD1(getNameVirt, std::string(const std::string& name));
 };
 
-TEST(Consumer, CalculateDomainLevel) {
-	const std::string url = "http://www.fantasticdomain.com/site/index.html";
-	std::string domain = "fantasticdomain.com";
-	ProducerMock mock;
-	Consumer consumer(&mock);
-	EXPECT_CALL(mock, getDomainFromUrl(url))
-		    .WillOnce(::testing::Return(domain));
-	int domainLevel = consumer.countLevelOfDomain(url);
-	EXPECT_EQ(domainLevel, 2);
+TEST(Producer, GetNameVirt) {
+  const std::string name = "test_gmock_name";
+  std::string val = "in test code";
+  ProducerMock mock;
+  EXPECT_CALL(mock, getNameVirt(name)).WillOnce(::testing::Return(val));
 }
+
+}  // namespace

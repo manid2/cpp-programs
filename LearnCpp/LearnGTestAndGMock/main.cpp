@@ -5,10 +5,11 @@
  *      Author: Mani Kumar
  */
 
-//#include "cgraphic.h"
+#include "producer.h"
 
-//using namespace PFF;
+using namespace PFF;
 
 int main(int argc, char **argv) {
-   return /*execute();*/ 0;
+   execute(argc, argv);
+   return 0;
 }
