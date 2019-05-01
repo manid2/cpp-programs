@@ -14,7 +14,7 @@ Producer::~Producer() { cout << "~Producer(), enter" << endl; }
 std::string Producer::getNameVirt(const std::string& name) {
   string val("in src code");
   //cout << "\tProducer::getNameVirt(), val=[" << val << "]" << endl;
-  return val + "_args=" + name;
+  return val + " args=" + name;
 }
 
 }  // namespace PFF

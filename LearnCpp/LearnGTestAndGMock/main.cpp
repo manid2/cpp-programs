@@ -5,11 +5,11 @@
  *      Author: Mani Kumar
  */
 
-#include "producer.h"
+#include "consumer.h"
 
 using namespace PFF;
 
 int main(int argc, char **argv) {
-   execute(argc, argv);
+   PFF::execute(argc, argv);
    return 0;
 }
