@@ -1,31 +1,33 @@
 /*
  * consumer.h
  *
- *  Created on: 02-May-2019
+ *  Created on: 05-May-2019
  *      Author: manid2
  */
 
 #ifndef LEARNCPP_LEARNGTESTANDGMOCK_INC_CONSUMER_H_
 #define LEARNCPP_LEARNGTESTANDGMOCK_INC_CONSUMER_H_
 
+#include <string>
+#include <algorithm>
+
 #include "producer.h"
-#include <memory>
 
 namespace PFF {
 
 class Consumer {
  public:
-  Consumer();
-  Consumer(Producer *p);
-  void fCallNameVirt(void);
+  Consumer(Producer *p)
+      : producer(p) {
+  }
+  int countLevelOfDomain(const std::string & url) const;
 
  private:
-  std::shared_ptr<Producer> m_producer;
+  Producer *producer;
 };
 
-// entry func into producer class
 extern int execute(int argc, char **argv);
 
 }  // namespace PFF
 
-#endif /* LEARNCPP_LEARNGTESTANDGMOCK_INC_CONSUMER_H_ */
+#endif /*CONSUMER_H*/

@@ -1,25 +1,25 @@
-#ifndef _INC_PRODUCER_H_
-#define _INC_PRODUCER_H_
+/*
+ * producer.h
+ *
+ *  Created on: 05-May-2019
+ *      Author: manid2
+ */
 
-#include <iostream>
+#ifndef LEARNCPP_LEARNGTESTANDGMOCK_INC_PRODUCER_H_
+#define LEARNCPP_LEARNGTESTANDGMOCK_INC_PRODUCER_H_
+
 #include <string>
 
 namespace PFF {
 
 class Producer {
- public:
-  // ctor
-  Producer();
-  // dtor
-  virtual ~Producer();
+public:
+	virtual ~Producer(){}
+	virtual std::string getDomainFromUrl(const std::string & url) const = 0;
 
-  // virtual function
-  virtual std::string getNameVirt(const std::string& name);
-
-  // non-virtual function
-  // virtual std::string getNameNonVirt(const std::string& name);
+	virtual std::string getNameVirt(const std::string & url);
 };
 
-}  // namespace PFF
+} // namespace PFF
 
-#endif  // _INC_PRODUCER_H_
+#endif /* LEARNCPP_LEARNGTESTANDGMOCK_INC_PRODUCER_H_ */

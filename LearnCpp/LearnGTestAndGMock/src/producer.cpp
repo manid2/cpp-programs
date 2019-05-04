@@ -1,20 +1,8 @@
 #include "producer.h"
 
-using namespace std;
-
 namespace PFF {
 
-// ctor
-Producer::Producer() { cout << "Producer(), enter" << endl; }
-
-// dtor
-Producer::~Producer() { cout << "~Producer(), enter" << endl; }
-
-// virtual function
-std::string Producer::getNameVirt(const std::string& name) {
-  string val("in src code");
-  //cout << "\tProducer::getNameVirt(), val=[" << val << "]" << endl;
-  return val + " args=" + name;
+ std::string Producer::getNameVirt(const std::string & url){
+	 return std::string("sample string");
+ }
 }
-
-}  // namespace PFF
