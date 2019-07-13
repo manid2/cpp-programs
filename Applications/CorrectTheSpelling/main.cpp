@@ -1,20 +1,11 @@
 /*
  * main.cpp
  *
- *  Created on: 20-Mar-2018
+ *  Created on: 13-Jul-2019
  *      Author: Mani Kumar
  */
 
-/*#include "correct_spell.h"
-
- Driver program to test above functions
-int main(int argc, char **argv) {
-   return execute(argc, argv);
-}*/
-
-#include <iostream>
-
-#include "correct_spell.h"
+#include <CorrectSpell.h>
 
 using namespace PFF;
 
