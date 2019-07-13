@@ -20,6 +20,7 @@ class ISpellChecker {
   ISpellChecker(){};
   virtual ~ISpellChecker(){};
 
+  //! Run the spell checker for a given string with its size.
   virtual bool run(char const* str, size_t size)=0;
 };
 

@@ -19,11 +19,14 @@
 namespace PFF {
 
 /**
- * Application code:
+ * Application code
+ * ================
+ *
  * This class encapsulates the data and operations required to verify the
  * correct spelling of a given word in English.
  *
- * NOTE:
+ * NOTE
+ * ----
  * This class is made to be very simple for use in my blogs.
  * Hence I have ignored the spell checker's configurations and options.
  */
@@ -39,13 +42,16 @@ public:
   virtual ~CorrectTheSpelling();
 
   // API
-  //! check spelling
+  //@{
+  /** Check spelling using string and its variants. */
   bool checkSpelling(void);
   bool checkSpelling(std::string const& str);
   bool checkSpelling(char const *str);
   bool checkSpelling(char const *str, size_t size);
+  //@}
 
   // getters
+  //! Get the corrected word
   std::string getCorrectedWord(void) const { return this->correctWord; }
 
 private:

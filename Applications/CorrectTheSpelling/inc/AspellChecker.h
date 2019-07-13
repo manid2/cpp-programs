@@ -14,6 +14,9 @@
 
 namespace PFF {
 
+/**
+ * Uses Gnu Aspell lib to check the spelling
+ */
 class AspellChecker: public ISpellChecker {
 public:
   AspellChecker();

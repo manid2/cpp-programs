@@ -19,3 +19,25 @@ set(TEST_EXE "test_${MODULE_NAME}")
 add_executable(${TEST_EXE} ${module_test_srcs} ${module_srcs})
 target_link_libraries(${TEST_EXE} aspell gmock_main gtest_main)
 add_test(NAME ${TEST_EXE} COMMAND ${MODULE_NAME})
+
+#-- target for doc
+# build docs by default
+option(BUILD_DOC "Build documentation" ON)
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/${MODULE_NAME}.doxyfile)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")
+    
+    # note the option ALL which allows to build the docs together with the application
+    add_custom_target( ${MODULE_NAME}-doc ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM )
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)
