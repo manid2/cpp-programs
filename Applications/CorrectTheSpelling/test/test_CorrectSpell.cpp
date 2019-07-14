@@ -7,6 +7,7 @@
 
 #include "test_precomp.h"
 #include "CorrectSpell.h"
+#include <vector>
 
 using namespace std;
 using namespace PFF;
@@ -14,15 +15,41 @@ using namespace PFF;
 namespace {
 
 // Test data
-const std::string CorrectInputs[] = {};
-const std::string ErrorInputs[] = {};
+const vector<string> CorrectWords = { "hello", "world", "word" }; // same output words
+const vector<string> ToBeCorrectWords = { "olleh", "dworl", "dwor" }; // to be corrected words
+const vector<string> WrongWords = { "anam", "mana", "paru" }; // no output words
+const vector<string> LargeWords = { "Number12345", "012345678910",
+    "ABCDEFGHIJKLMNOPG" }; // large words are invalid inputs
 
 /*
  * Functional tests - to verify the working of the application for correct
  * inputs.
  */
 TEST(CorrectTheSpelling, Functional) {
-
+  // same output words
+  for (auto s : CorrectWords) {
+    CorrectTheSpelling cts(s);
+    cts.checkSpelling();
+    string c = cts.getCorrectedWord();
+    EXPECT_EQ(s, c);
+  }
+  // to be corrected words
+  for (size_t i = 0; i < ToBeCorrectWords.size(); ++i) {
+    string s = ToBeCorrectWords.at(i);
+    CorrectTheSpelling cts(s);
+    cts.checkSpelling();
+    string c = cts.getCorrectedWord();
+    EXPECT_EQ(c, CorrectWords.at(i));
+  }
+  // no output words
+  for (auto s : WrongWords) {
+    CorrectTheSpelling cts(s);
+    cts.checkSpelling();
+    string c = cts.getCorrectedWord();
+    EXPECT_TRUE(c.empty());
+  }
+  // TODO verify c'tors
+  // TODO verify APIs
 }
 
 /*
