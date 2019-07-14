@@ -48,7 +48,7 @@ bool CorrectTheSpelling::checkSpelling(char const *str, size_t size) {
   bool isCorrect = false;
 
   // check if input is ok
-  if (!str && !(size < 11)) {
+  if (!str || size > 10) {
     std::cerr << "input error: str=[" << hex << str << "], size=[" << dec
         << size << "]!" << std::endl;
     isCorrect = false;
