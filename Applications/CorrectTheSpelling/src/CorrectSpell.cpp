@@ -39,7 +39,9 @@ bool CorrectTheSpelling::checkSpelling(std::string const& str) {
 
 bool CorrectTheSpelling::checkSpelling(char const *str) {
   size_t s = 0;
-  for (; str[s]; ++s) {
+  if (str) {
+    for (; str[s]; ++s) {
+    }
   }
   return this->checkSpelling(str, s);
 }
@@ -48,9 +50,8 @@ bool CorrectTheSpelling::checkSpelling(char const *str, size_t size) {
   bool isCorrect = false;
 
   // check if input is ok
-  if (!str || size > 10) {
-    std::cerr << "input error: str=[" << hex << str << "], size=[" << dec
-        << size << "]!" << std::endl;
+  if (!str || size < 1 || size > 10) {
+    printf("input error: str=[%p], size=[%lu]\n", str, size);
     isCorrect = false;
     return isCorrect;
   }
