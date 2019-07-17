@@ -1,5 +1,5 @@
 /*
- * correct_spell.cpp
+ * CorrectSpell.cpp
  *
  *  Created on: 13-Jul-2019
  *      Author: Mani Kumar

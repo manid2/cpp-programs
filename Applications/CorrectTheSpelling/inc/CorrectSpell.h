@@ -1,5 +1,5 @@
 /*
- * correct_spell.h
+ * CorrectSpell.h
  *
  *  Created on: 13-Jul-2019
  *      Author: Mani Kumar
@@ -59,19 +59,6 @@ private:
   std::string correctWord;
   std::shared_ptr<ISpellChecker> spellChecker;
 };
-
-// Client program which uses the application code
-static int execute(int argc, char **argv) {
-  char str_default[] = "Hello";
-  char *str = argc == 2 ? argv[1] : str_default;
-
-  std::string s(str);
-  CorrectTheSpelling cts(s);
-  if (cts.checkSpelling())
-    std::cout << "-> correct word: " << cts.getCorrectedWord() << std::endl;
-
-  return 0;
-}
 
 }  // namespace PFF
 

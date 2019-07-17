@@ -1,31 +1,37 @@
 cmake_minimum_required(VERSION 3.0)
 
-get_filename_component(MODULE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+#-- set module variables
+get_filename_component(module_name ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+set(module_include ${CMAKE_CURRENT_SOURCE_DIR}/inc/)
+file(GLOB module_headers ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h)
+file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB module_tests ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc/)
-file(GLOB module_srcs ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-set(SRCS main.cpp ${module_srcs})
+#-- target for lib build
+string(TOLOWER ${module_name} module_lib_name)
+add_library(${module_lib_name} STATIC ${module_sources} ${module_headers})
+target_include_directories(${module_lib_name} PRIVATE ${module_include})
 
-add_executable(${MODULE_NAME} ${SRCS})
-target_link_libraries(${MODULE_NAME} aspell)
+#-- target for exe build
+set(exe_srcs main.cpp)
+add_executable(${module_name} ${exe_srcs})
+target_include_directories(${module_name} PRIVATE ${module_include})
+target_link_libraries(${module_name} PRIVATE ${module_lib_name} aspell)
 
-# includes gtest
+#-- target for test build
 enable_testing()
-#find_package(GTest REQUIRED)
-#include_directories(${GTEST_INCLUDE_DIRS})
+set(module_tests_name "test_${module_name}")
+add_executable(${module_tests_name} ${module_tests})
+target_include_directories(${module_tests_name} PRIVATE ${module_include})
+target_link_libraries(${module_tests_name} PRIVATE ${module_lib_name} 
+  aspell gmock_main gtest_main)
+add_test(NAME ${module_tests_name} COMMAND ${module_name})
 
-file(GLOB module_test_srcs ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
-set(TEST_EXE "test_${MODULE_NAME}")
-add_executable(${TEST_EXE} ${module_test_srcs} ${module_srcs})
-target_link_libraries(${TEST_EXE} aspell gmock_main gtest_main)
-add_test(NAME ${TEST_EXE} COMMAND ${MODULE_NAME})
-
-#-- target for doc
-# build docs by default
+#-- target for doc build
 option(BUILD_DOC "Build documentation" ON)
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/${MODULE_NAME}.doxyfile)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/${module_name}.doxyfile)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
     # request to configure the file
@@ -33,7 +39,7 @@ if (DOXYGEN_FOUND)
     message("Doxygen build started")
     
     # note the option ALL which allows to build the docs together with the application
-    add_custom_target( ${MODULE_NAME}-doc ALL
+    add_custom_target(${module_name}-doc ALL
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
