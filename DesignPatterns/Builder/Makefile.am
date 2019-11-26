@@ -8,11 +8,15 @@ libBuilderDesignPattern_la_LDFLAGS = -version-info 1:0:0
 # lib headers
 libBuilderDesignPattern_la_SOURCES = \
   inc/carbuilder.h \
-  inc/cburgerbuilder.h
+  inc/cburgerbuilder.h \
+  inc/cxmlbuilder.h \
+  inc/cxmldombuilder.h
 # lib sources
 libBuilderDesignPattern_la_SOURCES += \
   src/carbuilder.cpp \
-  src/cburgerbuilder.cpp
+  src/cburgerbuilder.cpp \
+  src/cxmlbuilder.cpp \
+  src/cxmldombuilder.cpp
 
 # build bins
 bin_PROGRAMS = BuilderDesignPattern

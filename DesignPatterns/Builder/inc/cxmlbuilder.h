@@ -14,11 +14,11 @@
 #include <memory>
 #include <map>
 #include <vector>
-#include "tinyxml2.h"
+//#include "tinyxml2.h"
 //#include <bits/unique_ptr.h>
 
 using namespace std;
-using namespace tinyxml2;
+//using namespace tinyxml2;
 
 namespace mani_dp {
 
