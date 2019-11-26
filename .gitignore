@@ -73,6 +73,7 @@ Thumbs.db
 
 # autotools generated files
 *.in
+!CMakeLists.txt.in
 configure
 *.m4
 autom4te.cache/
