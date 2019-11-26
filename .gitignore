@@ -10,42 +10,25 @@ compile_commands.json
 CTestTestfile.cmake
 
 # This file is used to ignore files which are generated
-# ----------------------------------------------------------------------------
-
 *.user
-*~
-*.autosave
 *.a
 *.core
-*.moc
 *.o
 *.obj
 *.orig
 *.rej
 *.so
 *.so.*
-*_pch.h.cpp
-*_resource.rc
-*.qm
-.#*
-*.*#
-core
-!core/
-tags
 .DS_Store
 .directory
 *.debug
-Makefile*
 *.prl
 *.app
-moc_*.cpp
-ui_*.h
-qrc_*.cpp
-Thumbs.db
 *.res
 *.rc
 /.qmake.cache
 /.qmake.stash
+Thumbs.db
 
 # qtcreator generated files
 *.pro.user*
@@ -88,3 +71,9 @@ Thumbs.db
 *.dll
 *.exe
 
+# autotools generated files
+*.in
+configure
+*.m4
+autom4te.cache/
+build*
