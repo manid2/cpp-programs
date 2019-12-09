@@ -1,3 +1,3 @@
 # Automake created by Mani Kumar
 
-SUBDIRS = Builder Composite
+SUBDIRS = googletest

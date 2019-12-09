@@ -1,6 +1,13 @@
 # Automake created by Mani Kumar
 
-AM_CPPFLAGS = -I$(srcdir)/inc
+AM_CPPFLAGS = -isystem $(top_srcdir)/ext/lib/googletest/googletest/include/
+#AM_CPPFLAGS += -isystem $(top_srcdir)/ext/lib/googletest/googlemock/include/
+AM_CPPFLAGS += -I$(srcdir)/inc $(GTEST_CPPFLAGS)
+
+AM_CXXFLAGS = $(GTEST_CXXFLAGS)
+AM_LDFLAGS = $(GTEST_LDFLAGS) $(GTEST_LIBS) \
+       $(top_builddir)/ext/lib/googletest/googletest/libgtest_main.la \
+       $(top_builddir)/ext/lib/googletest/googletest/libgtest.la
 
 # build lib
 lib_LTLIBRARIES = libBuilder.la
@@ -27,3 +34,10 @@ Builder_LDADD = libBuilder.la
 
 # build test-bin
 #test_Lcc_SOURCES = test/test_stringproblems.cpp
+TESTS =
+check_PROGRAMS =
+
+TESTS += test_Builder
+check_PROGRAMS += test_Builder
+test_Builder_SOURCES = test/test_carbuilder.cpp # test/test_main.cpp
+test_Builder_LDADD = libBuilder.la
