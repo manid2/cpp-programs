@@ -1,12 +1,4 @@
-# Nonstandard package files for distribution
-EXTRA_DIST = \
-  include/gtest/gtest-param-test.h.pump \
-  include/gtest/internal/gtest-param-util-generated.h.pump \
-  include/gtest/internal/gtest-tuple.h.pump \
-  include/gtest/internal/gtest-type-util.h.pump 
-
-# gtest source files that we don't compile directly.  They are
-# #included by gtest-all.cc.
+# list gtest files for distribution
 GTEST_SRC = \
   src/gtest-death-test.cc \
   src/gtest-filepath.cc \
@@ -15,7 +7,10 @@ GTEST_SRC = \
   src/gtest-printers.cc \
   src/gtest-test-part.cc \
   src/gtest-typed-test.cc \
-  src/gtest.cc \
+  src/gtest-matchers.cc \
+  src/gtest.cc
+
+GTEST_SRC += \
   include/gtest/internal/gtest-param-util-generated.h \
   include/gtest/internal/gtest-type-util.h \
   include/gtest/internal/gtest-param-util.h \
@@ -38,7 +33,7 @@ GTEST_SRC = \
   include/gtest/gtest-spi.h \
   include/gtest/gtest_prod.h
 
-EXTRA_DIST += $(GTEST_SRC)
+EXTRA_DIST = $(GTEST_SRC)
 
 # We define the global AM_CPPFLAGS as everything we compile includes from these
 # directories.
@@ -48,10 +43,9 @@ AM_LDFLAGS = $(GTEST_LDFLAGS)
 LDADD = $(GTEST_LIBS)
 
 # Build rules for libraries.
-check_LTLIBRARIES = lib/libgtest.la lib/libgtest_main.la
+check_LTLIBRARIES = libgtest.la libgtest_main.la
 
-lib_libgtest_la_SOURCES = src/gtest-all.cc
+libgtest_la_SOURCES = src/gtest-all.cc
 
-lib_libgtest_main_la_SOURCES = src/gtest_main.cc
-lib_libgtest_main_la_LIBADD = lib/libgtest.la
-
+libgtest_main_la_SOURCES = src/gtest_main.cc
+libgtest_main_la_LIBADD = libgtest.la
