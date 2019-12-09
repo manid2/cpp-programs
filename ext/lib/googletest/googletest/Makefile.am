@@ -35,17 +35,17 @@ GTEST_SRC += \
 
 EXTRA_DIST = $(GTEST_SRC)
 
-# We define the global AM_CPPFLAGS as everything we compile includes from these
-# directories.
-AM_CPPFLAGS = -isystem $(srcdir)/include -I$(srcdir) $(GTEST_CPPFLAGS)
-AM_CXXFLAGS = $(GTEST_CXXFLAGS)
-AM_LDFLAGS = $(GTEST_LDFLAGS)
-LDADD = $(GTEST_LIBS)
-
 # Build rules for libraries.
-check_LTLIBRARIES = libgtest.la libgtest_main.la
+lib_LTLIBRARIES = libgtest.la libgtest_main.la
 
 libgtest_la_SOURCES = src/gtest-all.cc
+libgtest_la_CPPFLAGS = -isystem $(srcdir)/include $(GTEST_CPPFLAGS)
+libgtest_la_CXXFLAGS = $(GTEST_CXXFLAGS)
+libgtest_la_LDFLAGS = $(GTEST_LDFLAGS)
+libgtest_la_LIBADD = $(GTEST_LIBS)
 
 libgtest_main_la_SOURCES = src/gtest_main.cc
-libgtest_main_la_LIBADD = libgtest.la
+libgtest_main_la_CPPFLAGS = -isystem $(srcdir)/include $(GTEST_CPPFLAGS)
+libgtest_main_la_CXXFLAGS = $(GTEST_CXXFLAGS)
+libgtest_main_la_LDFLAGS = $(GTEST_LDFLAGS)
+libgtest_main_la_LIBADD = libgtest.la $(GTEST_LIBS)

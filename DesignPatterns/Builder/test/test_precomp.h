@@ -10,6 +10,6 @@
 
 #include <string>
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
+//#include <gmock/gmock.h>
 
 #endif /* _DESING_PATTERNS_BUILDER__TEST_PRECOMP_H_ */
