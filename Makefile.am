@@ -1,4 +1,4 @@
 # Automake created by Mani Kumar
 
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = DesignPatterns
+SUBDIRS = DesignPatterns ext
