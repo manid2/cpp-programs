@@ -9,14 +9,14 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
-LT_INIT
-
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_AR
 AC_LANG([C],[C++])
+
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
+LT_INIT
 
 dnl Check for C++11
 AC_LANG_PUSH([C++])
@@ -104,15 +104,11 @@ AC_CONFIG_FILES([
   DesignPatterns/Makefile
   DesignPatterns/Builder/Makefile
   DesignPatterns/Composite/Makefile
-  dnl build ext lib gtest
   ext/Makefile
   ext/lib/Makefile
   ext/lib/googletest/Makefile
   ext/lib/googletest/googlemock/Makefile
   ext/lib/googletest/googletest/Makefile
-  dnl build tests
-  DesignPatterns/Builder/test/Makefile
-  DesignPatterns/Composite/test/Makefile
 ])
 
 AC_OUTPUT
