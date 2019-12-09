@@ -75,6 +75,12 @@ Thumbs.db
 *.in
 !CMakeLists.txt.in
 configure
-*.m4
 autom4te.cache/
 build*
+# m4 generated files
+aclocal.m4
+libtool.m4
+lt~obsolete.m4
+ltoptions.m4
+ltsugar.m4
+ltversion.m4
