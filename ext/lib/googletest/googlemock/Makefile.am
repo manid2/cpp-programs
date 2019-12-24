@@ -1,51 +1,49 @@
-# list gtest files for distribution
-GTEST_SRC = \
-  src/gtest-death-test.cc \
-  src/gtest-filepath.cc \
-  src/gtest-internal-inl.h \
-  src/gtest-port.cc \
-  src/gtest-printers.cc \
-  src/gtest-test-part.cc \
-  src/gtest-typed-test.cc \
-  src/gtest-matchers.cc \
-  src/gtest.cc
+# list gmock files for distribution
+GMOCK_SRC = \
+  include/gmock/gmock-actions.h \
+  include/gmock/gmock-cardinalities.h \
+  include/gmock/gmock-function-mocker.h \
+  include/gmock/gmock-generated-actions.h \
+  include/gmock/gmock-generated-function-mockers.h \
+  include/gmock/gmock-generated-matchers.h \
+  include/gmock/gmock.h \
+  include/gmock/gmock-matchers.h \
+  include/gmock/gmock-more-actions.h \
+  include/gmock/gmock-more-matchers.h \
+  include/gmock/gmock-nice-strict.h \
+  include/gmock/gmock-spec-builders.h \
+  include/gmock/internal/custom/gmock-generated-actions.h \
+  include/gmock/internal/custom/gmock-matchers.h \
+  include/gmock/internal/custom/gmock-port.h \
+  include/gmock/internal/gmock-internal-utils.h \
+  include/gmock/internal/gmock-port.h \
+  include/gmock/internal/gmock-pp.h
 
-GTEST_SRC += \
-  include/gtest/internal/gtest-param-util-generated.h \
-  include/gtest/internal/gtest-type-util.h \
-  include/gtest/internal/gtest-param-util.h \
-  include/gtest/internal/gtest-port.h \
-  include/gtest/internal/gtest-linked_ptr.h \
-  include/gtest/internal/gtest-internal.h \
-  include/gtest/internal/gtest-death-test-internal.h \
-  include/gtest/internal/gtest-filepath.h \
-  include/gtest/internal/gtest-string.h \
-  include/gtest/internal/gtest-tuple.h \
-  include/gtest/internal/gtest-port-arch.h \
-  include/gtest/gtest.h \
-  include/gtest/gtest-typed-test.h \
-  include/gtest/gtest-message.h \
-  include/gtest/gtest-test-part.h \
-  include/gtest/gtest_pred_impl.h \
-  include/gtest/gtest-printers.h \
-  include/gtest/gtest-death-test.h \
-  include/gtest/gtest-param-test.h \
-  include/gtest/gtest-spi.h \
-  include/gtest/gtest_prod.h
+GMOCK_SRC += \
+  src/gmock-all.cc \
+  src/gmock-cardinalities.cc \
+  src/gmock.cc \
+  src/gmock-internal-utils.cc \
+  src/gmock_main.cc \
+  src/gmock-matchers.cc \
+  src/gmock-spec-builders.cc
 
-EXTRA_DIST = $(GTEST_SRC)
+EXTRA_DIST = $(GMOCK_SRC)
 
 # We define the global AM_CPPFLAGS as everything we compile includes from these
 # directories.
-AM_CPPFLAGS = -isystem $(srcdir)/include -I$(srcdir) $(GTEST_CPPFLAGS)
+AM_CPPFLAGS = \
+  -isystem $(srcdir)/include \
+  -isystem $(srcdir)/../googletest/include \
+  $(GTEST_CPPFLAGS)
 AM_CXXFLAGS = $(GTEST_CXXFLAGS)
 AM_LDFLAGS = $(GTEST_LDFLAGS)
 LDADD = $(GTEST_LIBS)
 
 # Build rules for libraries.
-check_LTLIBRARIES = libgtest.la libgtest_main.la
+noinst_LTLIBRARIES = libgmock.la libgmock_main.la
 
-libgtest_la_SOURCES = src/gtest-all.cc
+libgmock_la_SOURCES = src/gmock-all.cc
 
-libgtest_main_la_SOURCES = src/gtest_main.cc
-libgtest_main_la_LIBADD = libgtest.la
+libgmock_main_la_SOURCES = src/gmock_main.cc
+libgmock_main_la_LIBADD = libgmock.la

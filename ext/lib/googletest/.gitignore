@@ -1,0 +1,86 @@
+# For CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# This file is used to ignore files which are generated
+*.user
+*.a
+*.core
+*.o
+*.obj
+*.orig
+*.rej
+*.so
+*.so.*
+.DS_Store
+.directory
+*.debug
+*.prl
+*.app
+*.res
+*.rc
+/.qmake.cache
+/.qmake.stash
+Thumbs.db
+
+# qtcreator generated files
+*.pro.user*
+
+# xemacs temporary files
+*.flc
+
+# Vim temporary files
+.*.swp
+
+# Visual Studio generated files
+*.ib_pdb_index
+*.idb
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj
+*vcxproj.*
+.vscode
+
+# Eclipse generated files
+.project
+.cproject
+
+# MinGW generated files
+*.Debug
+*.Release
+
+# Python byte code
+*.pyc
+
+# Binaries
+# --------
+*.dll
+*.exe
+
+# autotools generated files
+*.in
+!CMakeLists.txt.in
+configure
+autom4te.cache/
+build*
+# m4 generated files
+aclocal.m4
+libtool.m4
+lt~obsolete.m4
+ltoptions.m4
+ltsugar.m4
+ltversion.m4

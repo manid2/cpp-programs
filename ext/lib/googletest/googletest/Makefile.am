@@ -39,7 +39,7 @@ GTEST_SRC += \
 EXTRA_DIST = $(GTEST_SRC)
 
 # Build rules for libraries.
-lib_LTLIBRARIES = libgtest.la libgtest_main.la
+noinst_LTLIBRARIES = libgtest.la libgtest_main.la
 
 libgtest_la_SOURCES = src/gtest-all.cc
 libgtest_la_CPPFLAGS = -isystem $(srcdir)/include $(GTEST_CPPFLAGS)
