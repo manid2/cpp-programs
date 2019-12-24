@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([learn-autotools], [1.0], [learn-autotools@pff.com])
 
-AC_CONFIG_SRCDIR([DesignPatterns/Builder/main.cpp])
+AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -13,7 +13,7 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_AR
-AC_LANG([C],[C++])
+AC_LANG([C++])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 LT_INIT
@@ -98,21 +98,7 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([strstr])
 
-dnl Create Makefiles
-AC_CONFIG_FILES([
-  Makefile
-  DesignPatterns/Makefile
-  DesignPatterns/Builder/Makefile
-  DesignPatterns/Composite/Makefile
-  ext/Makefile
-  ext/lib/Makefile
-  ext/lib/googletest/Makefile
-  ext/lib/googletest/googlemock/Makefile
-  ext/lib/googletest/googletest/Makefile
-])
-
-AC_OUTPUT
-
+dnl Print build help msg
 AC_MSG_RESULT([
 learn-autotools $VERSION is now configured
 Configure Information:
@@ -136,3 +122,17 @@ Configure Information:
   GTEST_LDFLAGS   : $GTEST_LDFLAGS
   GTEST_LIBS      : $GTEST_LIBS
 ])
+
+dnl Create Makefiles
+AC_CONFIG_FILES([
+  Makefile
+  DesignPatterns/Makefile
+  DesignPatterns/Builder/Makefile
+  DesignPatterns/Composite/Makefile
+])
+
+dnl Config sub-packages
+AC_CONFIG_SUBDIRS([ext])
+#for multiple sub projects: AC_CONFIG_SUBDIRS([ext mocks])
+
+AC_OUTPUT
