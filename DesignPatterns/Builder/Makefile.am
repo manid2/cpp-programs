@@ -8,10 +8,8 @@ EXT_PATH = $(top_srcdir)/ext
 EXT_LIB_PATH = $(EXT_PATH)/lib
 EXT_LIB_GOOGLETEST_PATH = $(EXT_LIB_PATH)/googletest
 
-# build libs
+# build lib
 lib_LTLIBRARIES = libBuilder.la
-
-#== libBuilder.la
 libBuilder_la_CPPFLAGS = \
   -I$(srcdir)/inc
 # lib headers
@@ -24,16 +22,9 @@ libBuilder_la_SOURCES += \
 libBuilder_la_LDFLAGS = \
   -version-info 1:0:0
 # lib deps list
-#libBuilder_la_LIBADD = \
-#  $(top_builddir)/ext/lib/yajl/libyajl.la
-
-# build bins
-bin_PROGRAMS = Builder
-
-#== Builder
-Builder_SOURCES = main.cpp
-Builder_CPPFLAGS = -I$(srcdir)/inc
-Builder_LDADD = libBuilder.la
+libBuilder_la_LIBADD = \
+  #$(top_builddir)/mocks/appCommon/ASCommon/utils/libASCommonUtils.la \
+  #$(top_builddir)/ext/lib/cppyajl/libcppyajl.la
 
 #==============================================================================
 # test code build variables
@@ -42,13 +33,13 @@ Builder_LDADD = libBuilder.la
 EXTRA_DIST = test/test_precomp.h
 check_PROGRAMS = test_Builder
 
-#== test_Builder
-test_Builder_SOURCES = test/test_carbuilder.cpp
+test_Builder_SOURCES = \
+  test/test_carbuilder.cpp
 
 test_Builder_CPPFLAGS = \
   $(libBuilder_la_CPPFLAGS) \
-  -isystem $(EXT_LIB_GOOGLETEST_PATH)/googlemock/include/ \
-  -isystem $(EXT_LIB_GOOGLETEST_PATH)/googletest/include/ \
+  -isystem $(top_srcdir)/ext/lib/googletest/googlemock/include/ \
+  -isystem $(top_srcdir)/ext/lib/googletest/googletest/include/ \
   $(GTEST_CPPFLAGS)
 
 test_Builder_CXXFLAGS = $(GTEST_CXXFLAGS)

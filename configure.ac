@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([learn-autotools], [1.0], [learn-autotools@pff.com])
+AC_INIT([pff-stubs], [1.0], [pff-stubs@pff.com])
 
 AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_MACRO_DIR([m4])
@@ -100,7 +100,7 @@ AC_CHECK_FUNCS([strstr])
 
 dnl Print build help msg
 AC_MSG_RESULT([
-learn-autotools $VERSION is now configured
+pff-stubs $VERSION is now configured
 Configure Information:
   C Compiler      :  $CC
   DEFS            :  $DEFS
@@ -133,6 +133,6 @@ AC_CONFIG_FILES([
 
 dnl Config sub-packages
 AC_CONFIG_SUBDIRS([ext])
-#for multiple sub projects: AC_CONFIG_SUBDIRS([ext mocks])
+#AC_CONFIG_SUBDIRS([ext mocks])
 
 AC_OUTPUT

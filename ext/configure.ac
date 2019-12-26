@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([pff-dp-ext], [1.0], [pff-dp-ext@pff.com])
+AC_INIT([pff-stubs-ext], [1.0], [pff-stubs-ext@pff.com])
 
 AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_MACRO_DIR([m4])
@@ -100,7 +100,7 @@ AC_CHECK_FUNCS([strstr])
 
 dnl Print build help msg
 AC_MSG_RESULT([
-pff-dp-ext $VERSION is now configured
+pff-stubs-ext $VERSION is now configured
 Configure Information:
   C Compiler      :  $CC
   DEFS            :  $DEFS

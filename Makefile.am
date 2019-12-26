@@ -5,4 +5,3 @@ AM_CPPFLAGS = -I$(srcdir)/inc
 
 EXTRA_DIST = README.md
 SUBDIRS = ext DesignPatterns
-#SUBDIRS = ext mocks common
