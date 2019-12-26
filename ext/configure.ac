@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([pff-stubs], [1.0], [pff-stubs@pff.com])
+AC_INIT([pff-stubs-ext], [1.0], [pff-stubs-ext@pff.com])
 
 AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_MACRO_DIR([m4])
@@ -19,9 +19,9 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 LT_INIT
 
 dnl Check for C++11
-AC_LANG_PUSH([C++])
-AX_CXX_COMPILE_STDCXX_11([noext])
-AC_LANG_POP([C++])
+#AC_LANG_PUSH([C++])
+#AX_CXX_COMPILE_STDCXX_11([noext])
+#AC_LANG_POP([C++])
 
 dnl GCC specific configuration (optional)
 GCC_WARN_CXXFLAGS="-fdiagnostics-color=auto -Wall -Wextra -Wpedantic -Wfatal-errors"
@@ -66,7 +66,7 @@ else
 fi
 
 dnl Configure pthreads.
-ACX_PTHREAD([have_pthread=yes])
+#ACX_PTHREAD([have_pthread=yes])
 
 # Define gtest variables
 GTEST_VERSION="1.7.0"
@@ -100,7 +100,7 @@ AC_CHECK_FUNCS([strstr])
 
 dnl Print build help msg
 AC_MSG_RESULT([
-pff-stubs $VERSION is now configured
+pff-stubs-ext $VERSION is now configured
 Configure Information:
   C Compiler      :  $CC
   DEFS            :  $DEFS
@@ -126,13 +126,10 @@ Configure Information:
 dnl Create Makefiles
 AC_CONFIG_FILES([
   Makefile \
-  DesignPatterns/Makefile \
-  DesignPatterns/Builder/Makefile \
-  DesignPatterns/Composite/Makefile
+  lib/Makefile
 ])
 
 dnl Config sub-packages
-AC_CONFIG_SUBDIRS([ext])
-#AC_CONFIG_SUBDIRS([ext mocks])
+AC_CONFIG_SUBDIRS([lib/googletest])
 
 AC_OUTPUT

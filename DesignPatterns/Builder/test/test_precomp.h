@@ -8,8 +8,7 @@
 #ifndef _DESING_PATTERNS_BUILDER__TEST_PRECOMP_H_
 #define _DESING_PATTERNS_BUILDER__TEST_PRECOMP_H_
 
-#include <string>
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #endif /* _DESING_PATTERNS_BUILDER__TEST_PRECOMP_H_ */

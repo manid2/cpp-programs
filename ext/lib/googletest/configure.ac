@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([pff-stubs], [1.0], [pff-stubs@pff.com])
+AC_INIT([googletest], [1.0], [googletest@mav.com])
 
 AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_MACRO_DIR([m4])
@@ -100,7 +100,7 @@ AC_CHECK_FUNCS([strstr])
 
 dnl Print build help msg
 AC_MSG_RESULT([
-pff-stubs $VERSION is now configured
+googletest $VERSION is now configured
 Configure Information:
   C Compiler      :  $CC
   DEFS            :  $DEFS
@@ -126,13 +126,11 @@ Configure Information:
 dnl Create Makefiles
 AC_CONFIG_FILES([
   Makefile \
-  DesignPatterns/Makefile \
-  DesignPatterns/Builder/Makefile \
-  DesignPatterns/Composite/Makefile
+  googletest/Makefile \
+  googlemock/Makefile
 ])
 
 dnl Config sub-packages
-AC_CONFIG_SUBDIRS([ext])
-#AC_CONFIG_SUBDIRS([ext mocks])
+#AC_CONFIG_SUBDIRS([ext, mocks])
 
 AC_OUTPUT
