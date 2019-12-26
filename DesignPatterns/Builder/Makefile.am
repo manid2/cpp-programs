@@ -26,6 +26,15 @@ libBuilder_la_LIBADD = \
   #$(top_builddir)/mocks/appCommon/ASCommon/utils/libASCommonUtils.la \
   #$(top_builddir)/ext/lib/cppyajl/libcppyajl.la
 
+# build bin
+bin_PROGRAMS = Builder
+
+#== Builder
+Builder_SOURCES = main.cpp
+Builder_CPPFLAGS = \
+  $(libBuilder_la_CPPFLAGS)
+Builder_LDADD = libBuilder.la
+
 #==============================================================================
 # test code build variables
 #==============================================================================

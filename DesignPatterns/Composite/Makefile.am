@@ -32,7 +32,8 @@ bin_PROGRAMS = Composite
 
 #== Composite
 Composite_SOURCES = main.cpp
-Composite_CPPFLAGS = -I$(srcdir)/inc
+Composite_CPPFLAGS = \
+  $(libComposite_la_CPPFLAGS)
 Composite_LDADD = libComposite.la
 
 #==============================================================================
