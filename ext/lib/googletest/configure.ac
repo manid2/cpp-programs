@@ -126,8 +126,8 @@ Configure Information:
 dnl Create Makefiles
 AC_CONFIG_FILES([
   Makefile \
-  googlemock/Makefile \
-  googletest/Makefile
+  googletest/Makefile \
+  googlemock/Makefile
 ])
 
 dnl Config sub-packages

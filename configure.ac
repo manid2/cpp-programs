@@ -125,9 +125,9 @@ Configure Information:
 
 dnl Create Makefiles
 AC_CONFIG_FILES([
-  Makefile
-  DesignPatterns/Makefile
-  DesignPatterns/Builder/Makefile
+  Makefile \
+  DesignPatterns/Makefile \
+  DesignPatterns/Builder/Makefile \
   DesignPatterns/Composite/Makefile
 ])
 
