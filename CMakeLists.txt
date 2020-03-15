@@ -1,40 +1,20 @@
+#####################################################################
+# ProgramsForFun
+# Sample and ungrouped programs for quick reference.
+#####################################################################
+
 cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 11)
 
 project(ProgramsForFun)
-#add_subdirectory(Builder)
-#add_subdirectory(Composite)
 
-# Adding sub dirs automatically
-# macro(<name> [arg1 [arg2 [arg3 ...]]])
-#  COMMAND1(ARGS ...)
-#  COMMAND2(ARGS ...)
-#  ...
-# endmacro(<name>)
-macro(LIST_SUBDIRS result curdir)
-  file(GLOB children RELATIVE ${curdir} ${curdir}/[^.]*)
-  message( STATUS "curdir: " ${curdir} )
-  message( STATUS "========== Finding modules to build ==========" )
-  set(dirlist "")
-  foreach(child ${children})
-    if(IS_DIRECTORY ${curdir}/${child})
-      list(APPEND dirlist ${child})
-      message( STATUS "Found subdir: " ${child} )
-    endif()
-  endforeach()
-  set(${result} ${dirlist})
-endmacro()
-
-
-message( STATUS "CMAKE_SOURCE_DIR:         " ${CMAKE_SOURCE_DIR} )
-LIST_SUBDIRS(SUBDIRS ${CMAKE_SOURCE_DIR})
-
-message( STATUS "========== Adding modules to build ==========" )
-foreach(subdir ${SUBDIRS})
-  add_subdirectory(${subdir})
-  message( STATUS "Added subdir: " ${subdir} )
-endforeach()
-message( STATUS "========== All modules are added ==========" )
+# Add sub directories to the project
+add_subdirectory(Applications)
+add_subdirectory(DesignPatterns)
+add_subdirectory(Experiments)
+add_subdirectory(LearnCpp)
+#add_subdirectory(LearnOpenCV)
+#-- NOTE: Commented all targets that requires external libs
 
 #####################################################################
 # Add gtest and gmock

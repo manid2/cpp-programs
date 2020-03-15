@@ -32,10 +32,10 @@ using namespace std;
 DECLARE_ENUM_NAMES(MY_ENUM_NAME, MY_ENUM_LIST(GENERATE_ENUM_NAME))
 DECLARE_ENUM_STRINGS(MY_ENUM_NAME, MY_ENUM_LIST(GENERATE_ENUM_STRING))
 
-int main(int argc, char **argv)
+/*int main(int argc, char **argv)
 {
     cout << MyEnumStrings[static_cast<size_t>(MyEnum::Bar)] << endl;
     cout << static_cast<size_t>(MyEnum::Bar) << endl;
     //cout << MyEnumStrings[Bar] << endl;
     return 0;
-}
+}*/

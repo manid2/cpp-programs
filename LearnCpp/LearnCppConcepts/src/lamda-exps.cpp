@@ -15,7 +15,7 @@ using namespace std;
  * 3. [ captures ] { body }
 */
 
-int main(int argc, char **argv)
+/*int main(int argc, char **argv)
 {
     return 0;
-}
+}*/

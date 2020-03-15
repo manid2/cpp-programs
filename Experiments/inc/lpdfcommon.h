@@ -42,7 +42,7 @@ typedef std::stringstream PDFSStream;
 // PDF syntax constants
 static const PDFString PDF_NEW_LINE("\n");
 static const PDFString PDF_HEADER_VER("%PDF-1.7");
-static unsigned char BIN_CHARS[] = { 37, 225, 226, 227, 2.8 };  // %áâãä
+static unsigned char BIN_CHARS[] = { 37, 225, 226, 227, 28 };  // %áâãä
 static const PDFString PDF_HEADER_BIN(reinterpret_cast<char*>(BIN_CHARS));
 static const PDFString PDF_EOF("%%EOF");
 
