@@ -52,6 +52,21 @@ autoreconf -i
 make # -j4 optional parallel builds
 ```
 
+## Useful commands
+
+Format all source code using `clang-format`.
+
+```bash
+# using find and xargs
+find . -name "*.hh" -o -name "*.cc" -type f | \
+xargs clang-format -i -style=file
+```
+
 ## TODO
 
-TBD
+- Add forked [manid2/googletest][manid2_gtest_link] as git submodule
+- Add `autotools` support
+- Use pre-commit hooks to format source code
+
+<!-- External links-->
+[manid2_gtest_link]: https://github.com/manid2/googletest
