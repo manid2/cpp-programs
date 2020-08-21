@@ -1,69 +1,57 @@
-# Programs for fun
+# C++ code examples
 
-## Simple **Cpp programs** to:  
-1 Learn Cpp techniques.  
-2 Solve simple problems.  
-3 Automate or simplify redundant tasks.  
+C++ code examples for common reusable problems such as:
 
-This project uses CMake to support cross-platform build.
+- Structured data handing
+- CMake or Autotools template project, etc.
 
-Install [CMake](https://cmake.org/) to generate the build files for your system.
+Also for coding practice.
 
-## How to use?
+## How to build
 
-```sh
-# I prefer to use out-of-source build for easy maintainence.
-# It separates the source files from the build files and binaries.
+Clone the repo and use `cmake` or `autotools` to build project.
 
-mkdir ProgramsForFun_top
-cd ProgramsForFun_top
-git clone https://github.com/manid2/ProgramsForFun.git
+Use `out-of-source` build to separate source and build files.
 
-mkdir build
-cd build
-cmake -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ../ProgramsForFun/
+```bash
+mkdir cpp-code-examples_top
+cd cpp-code-examples_top
+git clone https://github.com/manid2/cpp-code-examples.git
+
+# cd cpp-code-examples_top
+mkdir build && cd build
+```
+
+### CMake
+
+```bash
+# cd build
+# Generate cmake build files and optional eclipse project files.
+cmake ../cpp-code-examples \
+    -G"Eclipse CDT4 - Unix Makefiles" \
+    -DCMAKE_BUILD_TYPE=Debug
+    # Eclipse CDT project options (optional)
+    #-DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE
+    #-DCMAKE_ECLIPSE_MAKE_ARGUMENTS=-j4
+    #-DCMAKE_ECLIPSE_VERSION=4.17
+# Build project
+make # -j4 optional parallel builds
+```
+
+### Autotools
+
+```bash
+# cd cpp-code-examples
+# Generate configure script, *.in & *.m4 files
+autoreconf -i
+
+# cd build
+# Generate build files
+../cpp-code-examples/configure # with optional configure options
+# Build project
+make # -j4 optional parallel builds
 ```
 
 ## TODO
-1. Implement **LearnGTestAndGMock**.
-2. Add a module to **automatically insert data into an empty space in an image**.
-3. Add a module to **Generate/Scan Barcode images**.
-4. Add a module to **Decode/Encode jpeg2raw** file using libjpeg. 
-5. Add a module to show how to use Unicode characters(esp CJK) in C++  
-   and character code conversion using libiconv.
-6. Add a module to Create/Parse **XML** files.
-7. Add a module to Create/Parse **YML** files.
-8. Create a chat application in C++ with encryption.
 
-## Cpp Skills to learn
-
-* Classes and Object Oriented Concepts
-* Constructors and Destructors
-* Syntax and Language Fundamentals
-* Standard Template Library
-* Directives and Macros
-* Pointers and File Handling
-* Exceptions and Exception Handling
-* Functions and Virtual Functions
-* Operator Overloading
-* Miscellaneous
-
-License
---------
-
-    GNU GPL v3
-    
-    Copyright (c) 2018 Mani Kumar
-    
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+TBD
