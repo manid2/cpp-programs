@@ -3,7 +3,7 @@
 C++ code examples for common reusable problems such as:
 
 - Structured data handing
-- CMake or Autotools template project, etc.
+- CMake template project, etc.
 
 Also for coding practice.
 
@@ -38,20 +38,6 @@ cmake ../cpp-code-examples \
 make # -j4 optional parallel builds
 ```
 
-### Autotools
-
-```bash
-# cd cpp-code-examples
-# Generate configure script, *.in & *.m4 files
-autoreconf -i
-
-# cd build
-# Generate build files
-../cpp-code-examples/configure # with optional configure options
-# Build project
-make # -j4 optional parallel builds
-```
-
 ## Useful commands
 
 Format all source code using `clang-format`.
@@ -64,8 +50,6 @@ xargs clang-format -i -style=file
 
 ## TODO
 
-- Add forked [manid2/googletest][manid2_gtest_link] as git submodule
-- Add `autotools` support
 - Use pre-commit hooks to format source code
 
 <!-- External links-->
