@@ -24,7 +24,11 @@ add_subdirectory(CodeCoverage)
 add_subdirectory(StructuredData)
 add_subdirectory(UnitTesting)
 
-# TODO: Add external libs: manid2/googletest.
+# Add external libraries
+# TODO: make `make test` rule optional, i.e. use BUILD_TESTING option
+enable_testing()
+add_subdirectory(ext/lib/googletest)
+
 # TODO: Add optional builds: doxygen, GNOME/libxml2 or GNOME/libxmlplusplus,
 #   nlohmann/json.
 

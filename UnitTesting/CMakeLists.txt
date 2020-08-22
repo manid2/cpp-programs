@@ -27,4 +27,25 @@ target_include_directories(${GTEST_GMOCK_CONSUMER_PRODUCER_PVT_LIB} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc/>
 )
 # build test binary
-# TODO: add test target
+# set source files
+set(GTEST_GMOCK_CONSUMER_PRODUCER_TEST_SRCS
+    test/test_producer.cc
+)
+set(GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE
+    "test_${GTEST_GMOCK_CONSUMER_PRODUCER}")
+# add test target
+add_executable(${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
+    ${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_SRCS}
+)
+# link test binary to dependencies
+target_link_libraries(${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
+    ${GTEST_GMOCK_CONSUMER_PRODUCER_PVT_LIB}
+    gmock_main
+    gmock
+    gtest
+)
+# add test to make rule 'make test'
+# FIXME: `make test` rule is not created
+add_test(${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
+    ${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
+)
