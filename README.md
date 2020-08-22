@@ -2,8 +2,12 @@
 
 C++ code examples for common reusable problems such as:
 
-- Structured data handing
-- CMake template project, etc.
+- CMake template project
+- Structured data handling
+- Code coverage using `gcov`.
+- `cscope` database generator script.
+- Python script to rename files, useful in code refactoring.
+- `googletest` as git submodules.
 
 Also for coding practice.
 
