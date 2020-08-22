@@ -45,7 +45,6 @@ target_link_libraries(${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
     gtest
 )
 # add test to make rule 'make test'
-# FIXME: `make test` rule is not created
 add_test(${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
     ${GTEST_GMOCK_CONSUMER_PRODUCER_TEST_EXE}
 )
