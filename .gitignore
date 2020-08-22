@@ -1,4 +1,6 @@
-# For CMake
+# Project level .gitignore file
+
+# CMake generated files
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -9,50 +11,26 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
-# This file is used to ignore files which are generated
-*.user
-*.a
-*.core
+# Binary files
 *.o
 *.obj
-*.orig
-*.rej
 *.so
 *.so.*
-.DS_Store
-.directory
+*.a
+*.dll
+*.exe
+*.out
+*.core
+*.moc
 *.debug
-*.prl
-*.app
-*.res
-*.rc
-/.qmake.cache
-/.qmake.stash
-Thumbs.db
 
 # qtcreator generated files
 *.pro.user*
 
-# xemacs temporary files
-*.flc
-
 # Vim temporary files
 .*.swp
 
-# Visual Studio generated files
-*.ib_pdb_index
-*.idb
-*.ilk
-*.pdb
-*.sln
-*.suo
-*.vcproj
-*vcproj.*.*.user
-*.ncb
-*.sdf
-*.opensdf
-*.vcxproj
-*vcxproj.*
+# VSCode generated files
 .vscode
 
 # Eclipse generated files
@@ -65,11 +43,6 @@ Thumbs.db
 
 # Python byte code
 *.pyc
-
-# Binaries
-# --------
-*.dll
-*.exe
 
 # autotools generated files
 *.in
@@ -85,5 +58,5 @@ ltoptions.m4
 ltsugar.m4
 ltversion.m4
 
-# ignore cscope files
+# cscope files
 cscope/
