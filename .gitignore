@@ -60,3 +60,12 @@ ltversion.m4
 
 # cscope files
 cscope/
+
+# gtags
+GPATH
+GRTAGS
+GTAGS
+HTML/
+
+# ctags
+tags
