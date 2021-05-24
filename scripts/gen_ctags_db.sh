@@ -11,7 +11,7 @@ else
     exit -1
 fi
 
-gen_proj_cscope_db_n_setenv() {
+gen_proj_ctags_db() {
     ctags --totals --fields=fKsSt --extras=-fq --kinds-c++=+p --excmd=number \
         -L $PROJ_SRC_FILES \
         -f $PROJ_BUILD_IDE_DIR/geany_ide/cpp-code-examples.tags
