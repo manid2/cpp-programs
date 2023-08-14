@@ -1,0 +1,59 @@
+# makefile to test threads and gcov results
+# Refer:
+# https://github.com/remonbonbon/makefile-example
+
+INC_DIR=./inc
+SRC_DIR=./src
+OBJ_DIR=./obj # TODO: write objects to obj dir
+BIN_DIR=./obj # TODO: write bins to bin dir
+LIB_DIR=./obj # TODO: write bins to lib dir
+TEST_DIR=./test
+
+CXX=g++
+CXXFLAGS=-I$(INC_DIR)
+
+TARGET=threads_main
+CHECK_TARGET=test_threads
+
+SRCS=$(shell find $(SRC_DIR)  -name "*.cpp" -type f) main.cpp
+T_SRCS=$(shell find $(SRC_DIR) $(TEST_DIR) -name "*.cpp" -type f)
+
+HEADS=$(shell find $(INC_DIR)  -name "*.h" -type f)
+OBJS=$(SRCS:.cpp=.o)
+T_OBJS=$(T_SRCS:.cpp=.o)
+DEPS=Makefile.depend
+T_DEPS=Makefile.test.depend
+
+GCOV_COMPILE_OPTIONS=--coverage -pg -g
+GCOV_GEN_FILES=$(shell find . -name "*.gcno" -o -name "*.gcda" -type f)
+
+INCLUDES = -I$(INC_DIR)
+CXXFLAGS = -Wall $(INCLUDES) $(GCOV_COMPILE_OPTIONS)
+LDFLAGS=-lpthread $(GCOV_COMPILE_OPTIONS)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS) $(HEADS)
+	$(CXX) -o $@ $(OBJS) $(CXXFLAGS) $(LDFLAGS)
+
+check: $(CHECK_TARGET)
+
+$(CHECK_TARGET): $(T_OBJS) $(HEADS)
+	$(CXX) -o $@ $(T_OBJS) $(CXXFLAGS) $(LDFLAGS)
+
+#run: all
+#	@./$(TARGET)
+#
+
+.PHONY: depend tdepend clean
+
+depend:
+	$(CXX) $(INCLUDES) -MM $(SRCS) > $(DEPS)
+	@sed -i -E "s/^(.+?).o: ([^ ]+?)\1/\2\1.o: \2\1/g" $(DEPS)
+
+tdepend:
+	$(CXX) $(INCLUDES) -MM $(T_SRCS) > $(T_DEPS)
+	@sed -i -E "s/^(.+?).o: ([^ ]+?)\1/\2\1.o: \2\1/g" $(T_DEPS)
+
+clean:
+	$(RM) $(OBJS) $(TARGET) $(GCOV_GEN_FILES) $(CHECK_TARGET) $(T_OBJS)
