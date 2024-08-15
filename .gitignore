@@ -1,71 +1,18 @@
-# Project level .gitignore file
+__pycache__
 
-# CMake generated files
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
+# ignore virtual environment directory
+.venv
 
-# Binary files
-*.o
-*.obj
-*.so
-*.so.*
-*.a
-*.dll
-*.exe
-*.out
-*.core
-*.moc
-*.debug
-
-# qtcreator generated files
-*.pro.user*
-
-# Vim temporary files
-.*.swp
-
-# VSCode generated files
-.vscode
-
-# Eclipse generated files
-.project
-.cproject
-
-# MinGW generated files
-*.Debug
-*.Release
-
-# Python byte code
-*.pyc
-
-# autotools generated files
-*.in
-!CMakeLists.txt.in
-configure
-autom4te.cache/
-build*
-# m4 generated files
-aclocal.m4
-libtool.m4
-lt~obsolete.m4
-ltoptions.m4
-ltsugar.m4
-ltversion.m4
-
-# cscope files
-cscope/
-
-# gtags
-GPATH
-GRTAGS
-GTAGS
-HTML/
-
-# ctags
+# ignore tags
+cscope.*
 tags
+
+# ignore vim swap file
+*.swp
+
+# ignore documentation output directory
+docs/output
+
+# ignore c/cpp compiled output
+a.out
+build/
