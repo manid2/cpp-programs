@@ -1,7 +1,7 @@
 /*
  * Example to show vtable in C++
  * =============================
- *   
+ *
  * Refer
  * -----
  *

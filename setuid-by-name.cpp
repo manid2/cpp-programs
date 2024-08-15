@@ -1,8 +1,8 @@
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 #include <bits/stdc++.h>
 
@@ -25,7 +25,8 @@ bool getUserIdByName(const std::string &name, uid_t &uid)
 {
 	struct passwd *pwd = getpwnam(name.c_str());
 	if (pwd == NULL) {
-		fprintf(stderr, "reason getpwnam() failed error message: %s\n",
+		fprintf(stderr,
+		        "reason getpwnam() failed error message: %s\n",
 		        strerror(errno));
 		return false;
 	}
@@ -37,7 +38,8 @@ bool getGroupIdByName(const std::string &name, gid_t &gid)
 {
 	struct group *grp = getgrnam(name.c_str());
 	if (grp == NULL) {
-		fprintf(stderr, "reason getgrnam(%s) failed error message: %s\n",
+		fprintf(stderr,
+		        "reason getgrnam(%s) failed error message: %s\n",
 		        name.c_str(), strerror(errno));
 		return false;
 	}
@@ -67,9 +69,10 @@ void child_setup_setuid(gpointer data)
 	if (ch) {
 		status = setgroups(ch->gids.size(), ch->gids.data());
 		if (status < 0) {
-			fprintf(stderr,
-			        "reason setgroups() failed error message: %s\n",
-			        strerror(errno));
+			fprintf(
+			    stderr,
+			    "reason setgroups() failed error message: %s\n",
+			    strerror(errno));
 			return;
 		}
 	}
