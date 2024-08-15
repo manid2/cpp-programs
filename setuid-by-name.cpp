@@ -106,7 +106,7 @@ void print(ChildSetupInfo *ch)
 	cout << "\n";
 }
 
-int main(int argc, char *argv[])
+int main(int, char **)
 {
 	ChildSetupInfo ch;
 	fork_process(&ch);

@@ -6,9 +6,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// extern gcov flush
-extern "C" void __gcov_flush(void);
-
 /*
  * handle signal and exit cleanly
  */
@@ -25,8 +22,6 @@ void sig_handler(int sig)
 		return;
 	}
 
-	printf("dumping gcov data files i.e. .gcda files\n");
-	__gcov_flush();
 	printf("exiting process\n");
 	_exit(sig);
 }
@@ -43,7 +38,7 @@ void print2DArray(int **arr_2d, int rows, int cols)
 	}
 }
 
-void delete2DArray(int **arr_2d, int rows, int cols)
+void delete2DArray(int **arr_2d, int rows)
 {
 	if (arr_2d) {
 		for (int r = 0; r < rows; ++r) {
@@ -55,7 +50,7 @@ void delete2DArray(int **arr_2d, int rows, int cols)
 	}
 }
 
-int main(int argc, char **argv)
+int main(int, char **)
 {
 	signal(SIGINT, sig_handler);  // Register SIGINT
 	signal(SIGTERM, sig_handler); // Register SIGTERM
@@ -70,7 +65,7 @@ int main(int argc, char **argv)
 			for (int c = 0; c < 3; ++c) { arr[r][c] = ++count; }
 		}
 		print2DArray(arr, 3, 3);
-		delete2DArray(arr, 3, 3);
+		delete2DArray(arr, 3);
 	}
 
 	// Using a single pointer -- efficient

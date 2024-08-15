@@ -5,9 +5,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-const char *ch_proc_name = "./lfe_exe";
-
-int main(int argc, char *argv[])
+int main(int, char **)
 {
 	printf("lfe: process start\n");
 	pid_t ch_pid = fork();
@@ -29,7 +27,10 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	} else {
 		printf("lfe: in child process\n");
-		argv[0] = (char *)ch_proc_name;
+		char *argv[10];
+		argv[0] = const_cast<char *>("/bin/ls");
+		argv[1] = const_cast<char *>("-l");
+		argv[2] = NULL;
 		execv(argv[0], argv);
 		// The exec() functions return only if an error has occurred.
 		perror("lfe: error when execv()\n");

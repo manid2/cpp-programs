@@ -87,7 +87,7 @@ string find_n_replace(std::string subject, const std::string &search,
 
 } // namespace cpp_style
 
-int main(int a, char **v)
+int main(int, char **)
 {
 	string str_i("I am happy, am.");
 	string str_f("am");

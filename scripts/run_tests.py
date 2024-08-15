@@ -7,6 +7,7 @@ import subprocess
 
 
 from dataclasses import dataclass
+from subprocess import TimeoutExpired
 
 
 @dataclass
@@ -53,7 +54,13 @@ def main():
 
     # run each cpp bin file
     for cmd in cpp_bins:
-        result = subprocess.check_output([cmd])
+        try:
+            result = subprocess.check_output([cmd], timeout=5)
+        except TimeoutExpired:
+            print("TLE: " + cmd)
+            cpp_ts.parse_ts("")
+            continue
+
         result = result.decode("utf-8").rstrip()
         result = result.partition('\n')[0] if len(result) else ""
         print(cmd + " --> " + result)

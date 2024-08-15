@@ -37,7 +37,7 @@ void sig_handler(int sig)
  * created specifically to add signal handlers and dump gcov data files
  * as gcov generates data files only on process exit.
  */
-int main(int argc, char **argv)
+int main(int, char **)
 {
 	int ret = EXIT_SUCCESS;
 	signal(SIGINT, sig_handler);  // Register SIGINT

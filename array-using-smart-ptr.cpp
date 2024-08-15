@@ -11,7 +11,7 @@ using namespace std;
 
 typedef unsigned char u8_t;
 
-int main(int argc, char **argv)
+int main(int, char **)
 {
 	int size = 6;
 	std::unique_ptr<u8_t[]> p(new u8_t[size]());
